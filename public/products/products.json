@@ -5,7 +5,7 @@
       "name": "Camiseta Ralph Lauren Básica Blanca (M)",
       "sku": "POLO-BASICA-BLANCO",
       "variant": "M",
-      "price": 90000,
+      "price": 70000,
       "images": [
         "/products/PoloBasica/PoloBasicaFrenteBlanca.jpg",
         "/products/PoloBasica/PoloBasicaAtrasBlanca.jpg",
@@ -19,7 +19,7 @@
       "name": "Camiseta Ralph Lauren Básica Blanca (L)",
       "sku": "POLO-BASICA-BLANCO",
       "variant": "L",
-      "price": 90000,
+      "price": 70000,
       "images": [
         "/products/PoloBasica/PoloBasicaFrenteBlanca.jpg",
         "/products/PoloBasica/PoloBasicaAtrasBlanca.jpg",
@@ -34,7 +34,7 @@
       "name": "Camiseta Ralph Lauren Básica Azul (M)",
       "sku": "POLO-BASICA-AZUL",
       "variant": "M",
-      "price": 90000,
+      "price": 70000,
       "images": [
         "/products/PoloBasica/PoloBasicaFrenteAzul.jpg",
         "/products/PoloBasica/PoloBasicaAtrasAzul.jpg",
@@ -48,7 +48,7 @@
       "name": "Camiseta Ralph Lauren Básica Azul (L)",
       "sku": "POLO-BASICA-AZUL",
       "variant": "L",
-      "price": 90000,
+      "price": 70000,
       "images": [
         "/products/PoloBasica/PoloBasicaFrenteAzul.jpg",
         "/products/PoloBasica/PoloBasicaAtrasAzul.jpg",
@@ -63,7 +63,7 @@
       "name": "Camiseta Ralph Lauren Básica Negra (M)",
       "sku": "POLO-BASICA-NEGRO",
       "variant": "M",
-      "price": 90000,
+      "price": 70000,
       "images": [
         "/products/PoloBasica/PoloBasicaFrenteNegra.jpg",
         "/products/PoloBasica/PoloBasicaAtrasNegra.jpg",
@@ -77,7 +77,7 @@
       "name": "Camiseta Ralph Lauren Básica Negra (L)",
       "sku": "POLO-BASICA-NEGRO",
       "variant": "L",
-      "price": 90000,
+      "price": 70000,
       "images": [
         "/products/PoloBasica/PoloBasicaFrenteNegra.jpg",
         "/products/PoloBasica/PoloBasicaAtrasNegra.jpg",

@@ -1,43 +1,80 @@
 .hero-slider {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: min(80vh, 720px);
   overflow: hidden;
+  background: #000;
 }
 
-.hero-slider video {
+/* Slides en pila con fade */
+.slide {
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;      /* llena sin deformar */
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity .5s ease;
+  display: block;
 }
 
-.hero-slider video.active {
+.slide.active {
   opacity: 1;
-  z-index: 1;
 }
 
-.hero-slider .dots {
+/* Dots */
+.dots {
   position: absolute;
-  bottom: 20px;
-  width: 100%;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  gap: 8px;
   z-index: 2;
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: rgba(255,255,255,0.5);
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.9);
+  background: rgba(255,255,255,.2);
   cursor: pointer;
-  transition: background-color 0.3s;
+  padding: 0;
+}
+.dot.active {
+  background: #fff;
 }
 
-.dot.active {
-  background-color: white;
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-slider {
+    height: 58vh;
+  }
+}
+@media (max-width: 420px) {
+  .hero-slider {
+    height: 52vh;
+  }
+}
+
+/* Altura más cómoda en desktop y ultrawide */
+@media (min-width: 1024px) {
+  .hero-slider {
+    /* Entre 600px y 900px, según alto de la ventana */
+    block-size: clamp(600px, 85vh, 900px);
+  }
+
+  /* Desplaza el encuadre para evitar cortar caras/logos (ajusta el 30% si quieres) */
+  .hero-slider .slide {
+    object-fit: cover;
+    object-position: center 30%;
+  }
+}
+
+/* En pantallas MUY anchas (21:9), baja un poco la altura para que no “aplasten” */
+@media (min-aspect-ratio: 21/9) and (min-width: 1280px) {
+  .hero-slider {
+    block-size: min(78vh, 860px);
+  }
 }

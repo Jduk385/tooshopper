@@ -25,15 +25,7 @@ export default function FloatingButtons() {
         <FaInstagram size={30} />
       </a>
 
-      {/* TikTok */}
-      <a
-        href="https://www.tiktok.com/@tooshopper"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="floating-button tiktok"
-      >
-        <FaTiktok size={30} />
-      </a>
+     
     </div>
   );
 }

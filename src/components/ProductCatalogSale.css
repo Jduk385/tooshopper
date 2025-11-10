@@ -1,35 +1,32 @@
-.catalogo-sale {
-  padding: 2rem;
-  background-color: #fff0f0;
-  text-align: center;
-}
-
-.productos-sale {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  margin-top: 1rem;
-}
-
+/* -------- Tarjeta de producto -------- */
 .producto {
   background-color: white;
   padding: 1rem;
   border: 1px solid #eee;
   border-radius: 10px;
-  width: 200px;
+
+  /* ✅ Antes: width: 200px; → causaba overflow en pantallas pequeñas */
+  width: min(200px, 100%);
+  max-width: 100%;
+
   transition: transform 0.3s ease;
+  box-sizing: border-box;
 }
 
 .producto:hover {
   transform: scale(1.05);
 }
 
+/* -------- Imagen dentro de la tarjeta -------- */
 .producto img {
+  display: block;
   width: 100%;
+  height: auto;
   border-radius: 6px;
+  object-fit: cover;
 }
 
+/* -------- Precios -------- */
 .precio-original {
   text-decoration: line-through;
   color: gray;
@@ -40,4 +37,16 @@
   font-weight: bold;
 }
 
+/* ✅ En pantallas pequeñas, el hero debe pasar a UNA sola columna */
+@media (max-width: 480px) {
+  .hero-inner {
+    grid-template-columns: 1fr;        /* de 2 columnas → a 1 columna */
+    padding: 16px;                     /* reduce un poco el padding */
+  }
 
+  .hero-card {
+    border-left: none;                 /* quita la línea vertical */
+    border-top: 1px solid var(--line); /* la movemos arriba */
+    padding: 20px;
+  }
+}

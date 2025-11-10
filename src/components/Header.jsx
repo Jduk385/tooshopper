@@ -1,12 +1,10 @@
-// src/components/Header.jsx
 import "./Header.css";
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { FaSearch, FaShoppingCart, FaBars, FaTimes, FaUser, FaShieldAlt } from "react-icons/fa";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMe } from "../services/auth";
 import { getCart } from "../lib/cart";
 
-// 👉 PON AQUÍ TU(S) CORREO(S) DE ADMIN
 const ADMIN_EMAILS = ["info@tooshopper.com"];
 
 function isAdminUser(user) {
@@ -20,9 +18,12 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
   const [cartCount, setCartCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [pendingOrderId, setPendingOrderId] = useState(null); // ✅ Estado para orden pendiente
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Cambia estilo del header al hacer scroll
+  // Sticky efecto
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
@@ -30,32 +31,46 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lee el usuario actual usando getMe() (leyendo token desde localStorage dentro del servicio)
+  // Cerrar panel al navegar
+  useEffect(() => { setOpen(false); }, [location.pathname]);
+
+  // ✅ Nueva función para buscar órdenes pendientes
+  async function findPendingOrder() {
+    const token = localStorage.getItem("token");
+    if (!token) { setPendingOrderId(null); return; }
+    try {
+      const r = await fetch("/api/orders/pending", { headers: { Authorization: `Bearer ${token}` } });
+      const data = await r.json();
+      setPendingOrderId(r.ok && data?.id ? data.id : null);
+    } catch {
+      setPendingOrderId(null);
+    }
+  }
+
   function fetchUser() {
     getMe()
       .then((data) => {
-        // según tu backend puede venir como { user: {...} } o el usuario directo
         const u = data?.user || data;
         if (u) {
           setUser(u);
-          // guardamos en cache para PrivateRoute
           localStorage.setItem("me", JSON.stringify(u));
         } else {
           setUser(null);
           localStorage.removeItem("me");
+          setPendingOrderId(null); // Limpia si no hay usuario
         }
       })
       .catch(() => {
-        // token inválido/expirado o error de red
         localStorage.removeItem("token");
         localStorage.removeItem("me");
         setUser(null);
       });
   }
 
-  // Carga usuario + contador del carrito y escucha cambios
   useEffect(() => {
+    // Cargar usuario, carrito Y orden pendiente
     fetchUser();
+    findPendingOrder();
 
     const loadCartCount = () => {
       const items = getCart();
@@ -64,8 +79,11 @@ export default function Header() {
     };
     loadCartCount();
 
-    const authHandler = () => fetchUser();
-    const cartHandler = () => loadCartCount();
+    const authHandler = () => {
+      fetchUser();
+      findPendingOrder(); // Vuelve a buscar al cambiar auth
+    };
+    const cartHandler = () => loadCartCount(); // El carrito no afecta la orden pendiente
 
     window.addEventListener("auth-changed", authHandler);
     window.addEventListener("cart-changed", cartHandler);
@@ -76,7 +94,6 @@ export default function Header() {
     };
   }, []);
 
-  // Cerrar sesión desde el header
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("me");
@@ -88,14 +105,15 @@ export default function Header() {
   return (
     <header className={`header ${scrolled ? "scrolled" : ""}`} role="banner">
       <div className="container">
-        {/* LOGO */}
+
+        {/* LOGO (si tienes /logo1.png en public) */}
         <div className="logo1">
           <Link to="/" aria-label="Ir al inicio">
             <img src="/logo1.png" alt="Tooshopper" />
           </Link>
         </div>
 
-        {/* MENÚ */}
+        {/* MENÚ (solo desktop) */}
         <nav className="nav" aria-label="Principal">
           <NavLink to="/nuevo"  className={({ isActive }) => (isActive ? "active" : undefined)}>Nuevo</NavLink>
           <NavLink to="/mujer"  className={({ isActive }) => (isActive ? "active" : undefined)}>Mujer</NavLink>
@@ -103,14 +121,13 @@ export default function Header() {
           <NavLink to="/sale"   className={({ isActive }) => `sale ${isActive ? "active" : ""}`}>SALE</NavLink>
         </nav>
 
-        {/* ACCIONES */}
+        {/* ACCIONES (siempre visibles) */}
         <div className="actions">
           <button
             type="button"
             className="icon-button"
             aria-label="Buscar"
             onClick={() => navigate("/buscar")}
-            title="Buscar"
           >
             <FaSearch />
           </button>
@@ -120,15 +137,21 @@ export default function Header() {
             className="icon-button cart-button"
             aria-label={`Carrito (${cartCount})`}
             onClick={() => navigate("/carrito")}
-            title={`Carrito (${cartCount})`}
           >
             <FaShoppingCart />
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </button>
 
-          {/* Link Admin solo si es admin */}
+          {/* ✅ Botón para pagar orden pendiente (si existe) */}
+          {pendingOrderId && (
+            <Link to={`/pagar/${pendingOrderId}`} className="auth-link" style={{ background: '#fef9c3', color: '#713f12', border: '1px solid #fde047' }}>
+              Pagar orden pendiente
+            </Link>
+          )}
+
+          {/* Links de auth (ocultos en móvil por CSS) */}
           {user && isAdminUser(user) && (
-            <Link to="/admin/orders" className="auth-link" title="Panel administrativo">
+            <Link to="/admin/orders" className="auth-link">
               Admin
             </Link>
           )}
@@ -148,9 +171,59 @@ export default function Header() {
               <Link to="/login" className="auth-link">Iniciar sesión</Link>
             </>
           )}
+
+          {/* Botón hamburguesa (solo móvil por CSS) */}
+          <button
+            type="button"
+            className="burger"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen(v => !v)}
+          >
+            {open ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
+      </div>
+
+      {/* ====== PANEL MÓVIL ====== */}
+      <div id="mobile-menu" className={`mobile ${open ? "open" : ""}`}>
+        <button className="mobile-overlay" onClick={() => setOpen(false)} aria-label="Cerrar menú" />
+        <div className="mobile-panel">
+          {user ? (
+            <Link to="/perfil" className="mobile-user">
+              <FaUser /> Hola, {user.name || user.email}
+            </Link>
+          ) : (
+            <Link to="/login" className="mobile-user">
+              <FaUser /> Ingresar / Registrarse
+            </Link>
+          )}
+
+          {user && isAdminUser(user) && (
+            <Link to="/admin/orders" className="mobile-admin">
+              <FaShieldAlt /> Panel Admin
+            </Link>
+          )}
+
+          <nav className="mobile-nav" aria-label="Menú móvil">
+            <NavLink to="/nuevo"  className="m-link">Nuevo</NavLink>
+            <NavLink to="/mujer"  className="m-link">Mujer</NavLink>
+            <NavLink to="/hombre" className="m-link">Hombre</NavLink>
+            <NavLink to="/nosotros" className="m-link">Nosotros</NavLink>
+            <NavLink to="/politicas" className="m-link">Políticas</NavLink>
+            <NavLink to="/buscar" className="m-link">Buscar</NavLink>
+            <NavLink to="/carrito" className="m-link">Carrito</NavLink>
+            <NavLink to="/sale" className="m-link">SALE</NavLink>
+          </nav>
+
+          {user && (
+            <button type="button" className="m-link" onClick={logout}>
+              Cerrar sesión
+            </button>
+          )}
         </div>
       </div>
     </header>
   );
 }
-

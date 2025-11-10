@@ -1,209 +1,257 @@
-/* Fuente: mejor cargarla en index.html (ver abajo) */
-* { font-family: 'Poppins', sans-serif; }
+/* ====== RESET LOCAL DEL HEADER (sin tocar global) ====== */
+.header, .header * { box-sizing: border-box; }
+.header img, .header svg { display: block; }
 
+/* ====== CONTENEDOR PRINCIPAL ====== */
 .header {
-  background-color: white;
-  border-bottom: 1px solid #3d3838;
-  padding: 0.3rem 0;
   position: sticky;
   top: 0;
+  inset-inline: 0;
   z-index: 1000;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+
+  /* ✅ Añadido: Asegura que todo el header use la fuente global */
+  font-family: inherit;
 }
 
 .header.scrolled {
-  background-color: rgba(255, 255, 255, 0.95);
-  backdrop-filter: saturate(140%) blur(6px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  border-color: rgba(0,0,0,0.08);
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
 }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 1rem;
+.header .container {
+  inline-size: 100%;
+  max-inline-size: 1200px;
+  margin-inline: auto;
+  padding: 10px clamp(12px, 3vw, 24px);
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  min-height: 56px;
+  justify-content: space-between;
+  gap: 10px;
+  min-block-size: 56px;
 }
 
+/* ====== LOGO ====== */
+.logo1 a { display: inline-flex; align-items: center; }
 .logo1 img {
-  max-height: 45px;
-  height: auto;
-  object-fit: contain;
-  display: block;
+  max-block-size: 40px;        /* ✅ Aumentado: alto del logo */
+  inline-size: auto;
+
+  /* ✅ Añadido: Mejora el contraste si el logo tiene texto/partes claras */
+  filter: drop-shadow(0 0 1px rgba(0,0,0,.1));
 }
+
+/* ====== NAV DESKTOP ====== */
+.nav {
+  display: none;               /* se muestra desde 768px */
+  align-items: center;
+  gap: clamp(12px, 2.4vw, 24px);
+  white-space: nowrap;
+}
+/*Asegura que la fuente se herede en los links del menu*/
+.nav a{
+  font-family: inherit;}
 
 .nav a {
-  margin: 0 0.75rem;
+  font-weight: 600;
   text-decoration: none;
-  color: #413b3b;
-  font-weight: 500;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
+  color: #222;
+  padding: 6px 4px;
+  border-radius: 8px;
+  transition: background-color 0.1s ease, transform 0.1s ease;
 }
 
-.nav a:hover {
-  color: #649724;
-  text-decoration: underline;
+.nav a.active { color: #0e73ff; }
+
+/* ✅ Añadido: Feedback visual al hacer clic en un enlace del menú */
+.nav a:active {
+  transform: scale(0.97);
+  background-color: rgba(0,0,0,0.04);
 }
 
-.nav a.active {
-  color: #649724;
-  text-decoration: underline;
-}
+.nav .sale { color: #e11d48; }
+.nav .sale.active { color: #be123c; }
 
-/* SALE resaltado como “pill” */
-.nav .sale {
-  color: #fff;
-  background-color: #d60000;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 700;
-  transition: background-color 0.2s ease, transform 0.1s ease-in-out;
-}
-
-.nav .sale:hover {
-  background-color: #b50000;
-  transform: translateY(-1px);
-}
-
+/* ====== ACCIONES (buscar, carrito, auth, burger) ====== */
 .actions {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
+/* Botones de ícono */
 .icon-button {
-  background: none;
-  border: none;
-  font-size: 1.2rem;
-  margin-right: 0.75rem;
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  border: 1px solid rgba(0,0,0,.08);
+  background: #fff;
+  inline-size: 38px;
+  block-size: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.icon-button:hover,
-.icon-button:focus-visible {
-  color: #d60000;
-  transform: scale(1.15);
-  outline: none;
-}
+.icon-button:active { transform: translateY(1px); }
 
-.auth-link {
-  margin-left: 0.5rem;
-  text-decoration: none;
-  color: #0073e6;
-  font-weight: 500;
-}
-
-.auth-link:hover,
-.auth-link:focus-visible {
-  text-decoration: underline;
-  outline: none;
-}
-
-/* Accesibilidad: foco visible en enlaces del nav */
-.nav a:focus-visible,
-.auth-link:focus-visible {
-  outline: 2px solid #649724;
-  outline-offset: 2px;
-}
-
-/* Responsive básico */
-@media (max-width: 860px) {
-  .nav a { margin: 0 0.5rem; }
-  .logo1 img { max-height: 40px; }
-}
-
-/* Botón del carrito con badge */
-.actions .cart-button {
-  position: relative;
-}
-
+/* Carrito con badge */
+.cart-button { position: relative; }
 .cart-badge {
   position: absolute;
   top: -6px;
-  right: -6px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
+  inset-inline-end: -6px;
+  min-inline-size: 18px;
+  block-size: 18px;
   border-radius: 999px;
-  background: #ff3b30; /* rojo vivo */
+  background: #0e73ff;
   color: #fff;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: center;
+  font-size: 11px;
   font-weight: 700;
-  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  display: grid;
+  place-items: center;
+  padding-inline: 4px;
 }
 
-/* =========================
-   ⚙️ Parche responsive Header (añadido)
-   ========================= */
-
-/* Asegura layout correcto del nav en desktop */
-.nav { display: flex; align-items: center; gap: 0.25rem; }
-
-/* Tablet y abajo: header en dos filas (logo+acciones arriba, nav abajo) */
-@media (max-width: 992px) {
-  .container {
-    flex-wrap: wrap;
-    row-gap: 6px;
-  }
-
-  /* Orden de bloques sin cambiar tu HTML */
-  .logo1 { order: 1; }
-  .actions { order: 2; margin-left: auto; }
-  .nav { order: 3; width: 100%; margin-top: 6px; }
-
-  .logo1 img { max-height: 40px; height: auto; }
+/* Links de auth (ocultos en móvil) */
+.auth-link {
+  display: none;
+  color: #222;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 8px;
+  border-radius: 8px;
 }
 
-/* Móvil: nav deslizable horizontal + acciones compactas */
-@media (max-width: 768px) {
-  .nav {
-    gap: 0.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    padding-bottom: 4px;
-    scrollbar-width: none; /* Firefox */
-  }
-  .nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-
-  .nav a {
-    display: inline-block;
-    padding: 8px 10px;
-    font-size: 14px;
-  }
-
-  .icon-button { font-size: 1.35rem; padding: 6px; }
-
-  /* Mantener visibles login/registro; solo los hacemos más compactos */
-  .actions {
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .actions .auth-link {
-    font-size: 13px;
-    line-height: 1.2;
-  }
+/* Burger visible solo en móvil */
+.burger {
+  -webkit-tap-highlight-color: transparent;
+  appearance: none;
+  border: 1px solid rgba(0,0,0,.08);
+  background: #fff;
+  inline-size: 38px;
+  block-size: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
 }
 
-/* Móviles muy pequeños: compactar paddings */
-@media (max-width: 480px) {
-  .container { padding: 0 12px; }
-  .nav a { padding: 8px 8px; font-size: 13px; }
+/* ✅ Añadido: Feedback visual para el botón de hamburguesa */
+.burger:active {
+  transform: translateY(1px);
+  background-color: rgba(0,0,0,0.03);
 }
 
-/* Bonus: subrayado bonito para .nav a.active en desktop */
-@media (min-width: 993px) {
-  .nav a { position: relative; }
-  .nav a.active::after {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; bottom: -6px;
-    height: 2px; background: #649724;
-  }
+/* ====== LAYOUT DESKTOP ====== */
+@media (min-width: 768px) {
+  .nav { display: flex; }
+  .burger { display: none; }
+  .auth-link { display: inline-flex; }
 }
+
+/* ====== PANEL MÓVIL (NO EMPUJA EL LAYOUT) ====== */
+/* Contenedor fijo que cubre toda la pantalla, sin provocar overflow */
+.mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 999;                      /* por debajo del header sticky */
+  pointer-events: none;              /* desactivado por defecto */
+}
+
+/* Fondo semitransparente clicable */
+.mobile-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.38);
+  opacity: 0;
+  transition: opacity .25s ease;
+  border: 0;
+  padding: 0;
+}
+
+/* Panel lateral derecho */
+.mobile-panel {
+  position: absolute;
+  top: 0;
+  inset-inline-end: 0;
+  block-size: 100dvh;
+  inline-size: min(84vw, 360px);
+  background: #fff;
+  box-shadow: -10px 0 24px rgba(0,0,0,.15);
+  transform: translateX(100%);
+  transition: transform .28s ease;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 8px;
+  padding-block-end: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Al abrir, habilita interacciones y anima */
+.mobile.open {
+  pointer-events: auto;
+}
+.mobile.open .mobile-overlay { opacity: 1; }
+.mobile.open .mobile-panel { transform: translateX(0); }
+
+/* Usuario / Admin en el panel */
+.mobile-user,
+.mobile-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 700;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: rgba(0,0,0,.04);
+}
+
+/* Navegación móvil */
+.mobile-nav {
+  display: grid;
+  gap: 6px;
+  margin-block: 8px 12px;
+}
+
+.m-link {
+  display: block;
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+  padding: 12px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: #fff;
+}
+
+/* ✅ Añadido: Feedback visual al hacer clic en un enlace del panel móvil */
+.m-link:active {
+  transform: scale(0.98);
+  background-color: rgba(0,0,0,0.04);
+}
+
+
+/* Botón “Cerrar sesión” dentro del panel móvil */
+.mobile-panel .m-link[type="button"] {
+  text-align: start;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+/* ====== SEGURIDAD CONTRA OVERFLOW HORIZONTAL ====== */
+/* Evita que nada del header genere ancho extra en móviles */
+.header,
+.header .container,
+.mobile,
+.mobile-panel {
+  max-inline-size: 100vw;
+  overflow-x: hidden;
+}
+
+/* Asegura iconos e imágenes sin expandir ancho */
+.header img { max-inline-size: 100%; height: auto; }
+.header svg { width: 20px; height: 20px; }
+
+/* ====== FIN ====== */

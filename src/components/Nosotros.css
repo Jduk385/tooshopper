@@ -1,0 +1,160 @@
+/* Contenedor general */
+.about {
+  color: #eaeaea;
+  background: #0b0b0c;
+}
+
+/* Hero */
+.about-hero {
+  background: radial-gradient(1200px 400px at 50% -10%, #1b1b1f 0%, #0b0b0c 60%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.about-hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 16px 36px;
+  text-align: center;
+}
+
+.about-hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+}
+
+.about-hero p {
+  margin: 0 0 18px;
+  color: #cfcfcf;
+  font-size: 1.05rem;
+}
+
+/* CTA */
+.about-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: #151518;
+  padding: 10px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #f5f5f5;
+  font-weight: 700;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+.about-cta:hover { transform: translateY(-2px); opacity: .95; }
+
+/* Grid Intro */
+.about-grid {
+  max-width: 1100px;
+  margin: 26px auto 6px;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.about-card {
+  background: #111114;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.about-card h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.2rem, 2.2vw, 1.5rem);
+}
+.about-card p { color: #d8d8d8; line-height: 1.75; }
+
+/* Diferenciales */
+.about-diffs {
+  max-width: 1100px;
+  margin: 12px auto 0;
+  padding: 0 16px 2px;
+}
+
+.about-diffs h2 { margin: 12px 0; }
+
+.diff-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+.diff-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #111114;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #ddd;
+}
+
+/* Misión / Visión / Valores */
+.about-mvv {
+  max-width: 1100px;
+  margin: 12px auto 0;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.mvv-card {
+  background: #111114;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.mvv-card h3 { margin: 0 0 6px; }
+.mvv-card p, .mvv-card li { color: #d8d8d8; line-height: 1.7; }
+
+/* Galería */
+.about-gallery {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  padding: 0 16px 8px;
+}
+
+.gallery-sub { color: #cfcfcf; margin: 2px 0 12px; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: #0f0f12;
+}
+
+/* CTA final */
+.about-cta-block {
+  text-align: center;
+  max-width: 1100px;
+  margin: 18px auto 32px;
+  padding: 0 16px;
+}
+
+.about-cta-inline { margin-top: 8px; }
+
+/* Responsive */
+@media (min-width: 840px) {
+  .about-grid { grid-template-columns: 1fr 1fr; }
+  .diff-list { grid-template-columns: repeat(2, 1fr); }
+  .about-mvv  { grid-template-columns: repeat(3, 1fr); }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
