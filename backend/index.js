@@ -13,12 +13,15 @@ const ALLOWED_ORIGINS = [
   process.env.CLIENT_ORIGIN,
   'http://localhost:5173',
   'http://127.0.0.1:5173',
+  'https://tooshopper.com',
+  'https://www.tooshopper.com',
 ].filter(Boolean);
 
 app.use(cors({
   origin: ALLOWED_ORIGINS,
   methods: ['GET','POST','PUT','DELETE','PATCH','OPTIONS'],
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // ---- Parsers / util ----

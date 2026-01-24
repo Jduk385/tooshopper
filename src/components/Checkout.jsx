@@ -4,11 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { getCart, clearCart } from "../lib/cart";
 import { getMe } from "../services/auth";
 
-const API = (
-  import.meta.env.VITE_API_BASE ||
-  import.meta.env.VITE_API_URL ||
-  "http://localhost:5000"
-).replace(/\/+$/, "");
+const getApiUrl = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL;
+  if (import.meta.env.PROD && !apiUrl) {
+    console.error('⚠️  VITE_API_URL no está configurada en producción!');
+  }
+  const defaultUrl = import.meta.env.DEV ? 'http://localhost:5000' : '';
+  return (apiUrl || defaultUrl).replace(/\/+$/, '');
+};
+
+const API = getApiUrl();
 
 const looksLikeObjectId = (s) =>
   typeof s === "string" && /^[a-f0-9]{24}$/i.test(s);
