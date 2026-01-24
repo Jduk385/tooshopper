@@ -1,11 +1,19 @@
 // src/services/auth.js
 
 // URL del backend
-const API = (
-  import.meta.env.VITE_API_BASE ||
-  import.meta.env.VITE_API_URL ||
-  'http://localhost:5000'
-).replace(/\/+$/, '');
+const getApiUrl = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL;
+  
+  if (import.meta.env.PROD && !apiUrl) {
+    console.error('⚠️  VITE_API_URL no está configurada en producción!');
+    console.error('Configure la variable de entorno VITE_API_URL con la URL de su backend.');
+  }
+  
+  const defaultUrl = import.meta.env.DEV ? 'http://localhost:5000' : '';
+  return (apiUrl || defaultUrl).replace(/\/+$/, '');
+};
+
+const API = getApiUrl();
 
 // Borra token y cache local
 export function clearSession() {

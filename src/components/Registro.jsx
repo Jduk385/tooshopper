@@ -3,7 +3,15 @@ import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import "./AuthForms.css";
 
-const API = import.meta.env.VITE_API_URL || "";        // sigue usando tu .env
+const getApiUrl = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+  if (import.meta.env.PROD && !apiUrl) {
+    console.error('⚠️  VITE_API_URL no está configurada en producción!');
+  }
+  return (apiUrl || (import.meta.env.DEV ? 'http://localhost:5000' : '')).replace(/\/+$/, '');
+};
+
+const API = getApiUrl();
 const BASE = `${API}/api/auth`;                        // 🔧 ruta base correcta
 
 export default function Registro() {

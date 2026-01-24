@@ -9,9 +9,24 @@ export default defineConfig({
     port: 5173, // puerto del frontend
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // backend
+        target: 'http://localhost:5000', // backend en desarrollo
         changeOrigin: true,
+        secure: false,
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+    // Optimización para producción
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        },
+      },
+    },
+  },
+  // Variables de entorno
+  envPrefix: 'VITE_',
 })

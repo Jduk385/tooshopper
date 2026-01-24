@@ -2,11 +2,16 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-const API = (
-  import.meta.env.VITE_API_BASE ||
-  import.meta.env.VITE_API_URL ||
-  'http://127.0.0.1:5000'
-).replace(/\/+$/, '');
+const getApiUrl = () => {
+  const apiUrl = import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL;
+  if (import.meta.env.PROD && !apiUrl) {
+    console.error('⚠️  VITE_API_URL no está configurada en producción!');
+  }
+  const defaultUrl = import.meta.env.DEV ? 'http://localhost:5000' : '';
+  return (apiUrl || defaultUrl).replace(/\/+$/, '');
+};
+
+const API = getApiUrl();
 
 export default function PayStatus() {
   const { orderId } = useParams();
