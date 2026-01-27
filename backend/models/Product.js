@@ -9,7 +9,7 @@ const ProductSchema = new mongoose.Schema({
 
   price: { type: Number, required: true, min: 0 },
 
-  // Imágenes (rutas públicas, p. ej. "/img/products/SKU/front.jpg")
+  // Imágenes (rutas públicas, p. ej. "/img/products/SKU/front.webp")
   images: {
     type: [String],
     default: [],

@@ -7,10 +7,10 @@
       "variant": "M",
       "price": 70000,
       "images": [
-        "/products/PoloBasica/PoloBasicaFrenteBlanca.jpg",
-        "/products/PoloBasica/PoloBasicaAtrasBlanca.jpg",
-        "/products/PoloBasica/PoloBasicaDetalleBlanca.jpg",
-        "/products/PoloBasica/PoloBasicaDobladaBlanca.jpg"
+        "/products/PoloBasica/PoloBasicaFrenteBlanca.webp",
+        "/products/PoloBasica/PoloBasicaAtrasBlanca.webp",
+        "/products/PoloBasica/PoloBasicaDetalleBlanca.webp",
+        "/products/PoloBasica/PoloBasicaDobladaBlanca.webp"
       ],
       "available_stock": 5
     },
@@ -21,10 +21,10 @@
       "variant": "L",
       "price": 70000,
       "images": [
-        "/products/PoloBasica/PoloBasicaFrenteBlanca.jpg",
-        "/products/PoloBasica/PoloBasicaAtrasBlanca.jpg",
-        "/products/PoloBasica/PoloBasicaDetalleBlanca.jpg",
-        "/products/PoloBasica/PoloBasicaDobladaBlanca.jpg"
+        "/products/PoloBasica/PoloBasicaFrenteBlanca.webp",
+        "/products/PoloBasica/PoloBasicaAtrasBlanca.webp",
+        "/products/PoloBasica/PoloBasicaDetalleBlanca.webp",
+        "/products/PoloBasica/PoloBasicaDobladaBlanca.webp"
       ],
       "available_stock": 3
     },
@@ -36,10 +36,10 @@
       "variant": "M",
       "price": 70000,
       "images": [
-        "/products/PoloBasica/PoloBasicaFrenteAzul.jpg",
-        "/products/PoloBasica/PoloBasicaAtrasAzul.jpg",
-        "/products/PoloBasica/PoloBasicaDetalleAzul.jpg",
-        "/products/PoloBasica/PoloBasicaDobladaAzul.jpg"
+        "/products/PoloBasica/PoloBasicaFrenteAzul.webp",
+        "/products/PoloBasica/PoloBasicaAtrasAzul.webp",
+        "/products/PoloBasica/PoloBasicaDetalleAzul.webp",
+        "/products/PoloBasica/PoloBasicaDobladaAzul.webp"
       ],
       "available_stock": 4
     },
@@ -50,10 +50,10 @@
       "variant": "L",
       "price": 70000,
       "images": [
-        "/products/PoloBasica/PoloBasicaFrenteAzul.jpg",
-        "/products/PoloBasica/PoloBasicaAtrasAzul.jpg",
-        "/products/PoloBasica/PoloBasicaDetalleAzul.jpg",
-        "/products/PoloBasica/PoloBasicaDobladaAzul.jpg"
+        "/products/PoloBasica/PoloBasicaFrenteAzul.webp",
+        "/products/PoloBasica/PoloBasicaAtrasAzul.webp",
+        "/products/PoloBasica/PoloBasicaDetalleAzul.webp",
+        "/products/PoloBasica/PoloBasicaDobladaAzul.webp"
       ],
       "available_stock": 2
     },
@@ -65,10 +65,10 @@
       "variant": "M",
       "price": 70000,
       "images": [
-        "/products/PoloBasica/PoloBasicaFrenteNegra.jpg",
-        "/products/PoloBasica/PoloBasicaAtrasNegra.jpg",
-        "/products/PoloBasica/PoloBasicaDetalleNegra.jpg",
-        "/products/PoloBasica/PoloBasicaDobladaNegra.jpg"
+        "/products/PoloBasica/PoloBasicaFrenteNegra.webp",
+        "/products/PoloBasica/PoloBasicaAtrasNegra.webp",
+        "/products/PoloBasica/PoloBasicaDetalleNegra.webp",
+        "/products/PoloBasica/PoloBasicaDobladaNegra.webp"
       ],
       "available_stock": 6
     },
@@ -79,10 +79,10 @@
       "variant": "L",
       "price": 70000,
       "images": [
-        "/products/PoloBasica/PoloBasicaFrenteNegra.jpg",
-        "/products/PoloBasica/PoloBasicaAtrasNegra.jpg",
-        "/products/PoloBasica/PoloBasicaDetalleNegra.jpg",
-        "/products/PoloBasica/PoloBasicaDobladaNegra.jpg"
+        "/products/PoloBasica/PoloBasicaFrenteNegra.webp",
+        "/products/PoloBasica/PoloBasicaAtrasNegra.webp",
+        "/products/PoloBasica/PoloBasicaDetalleNegra.webp",
+        "/products/PoloBasica/PoloBasicaDobladaNegra.webp"
       ],
       "available_stock": 3
     },
@@ -94,10 +94,10 @@
       "variant": "M",
       "price": 70000,
       "images": [
-        "/products/BossBasica/BossBasicaFrenteBlanca.jpg",
-        "/products/BossBasica/BossBasicaAtrasBlanca.jpg",
-        "/products/BossBasica/BossBasicaDetalleBlanca.jpg",
-        "/products/BossBasica/BossBasicaDobladaBlanca.jpg"
+        "/products/BossBasica/BossBasicaFrenteBlanca.webp",
+        "/products/BossBasica/BossBasicaAtrasBlanca.webp",
+        "/products/BossBasica/BossBasicaDetalleBlanca.webp",
+        "/products/BossBasica/BossBasicaDobladaBlanca.webp"
       ],
       "available_stock": 5
     },
@@ -108,10 +108,10 @@
       "variant": "L",
       "price": 70000,
       "images": [
-        "/products/BossBasica/BossBasicaFrenteAzul.jpg",
-        "/products/BossBasica/BossBasicaAtrasAzul.jpg",
-        "/products/BossBasica/BossBasicaDetalleAzul.jpg",
-        "/products/BossBasica/BossBasicaDobladaAzul.jpg"
+        "/products/BossBasica/BossBasicaFrenteAzul.webp",
+        "/products/BossBasica/BossBasicaAtrasAzul.webp",
+        "/products/BossBasica/BossBasicaDetalleAzul.webp",
+        "/products/BossBasica/BossBasicaDobladaAzul.webp"
       ],
       "available_stock": 3
     },
@@ -122,10 +122,10 @@
       "variant": "M",
       "price": 70000,
       "images": [
-        "/products/BossBasica/BossBasicaFrenteNegra.jpg",
-        "/products/BossBasica/BossBasicaAtrasNegra.jpg",
-        "/products/BossBasica/BossBasicaDetalleNegra.jpg",
-        "/products/BossBasica/BossBasicaDobladaNegra.jpg"
+        "/products/BossBasica/BossBasicaFrenteNegra.webp",
+        "/products/BossBasica/BossBasicaAtrasNegra.webp",
+        "/products/BossBasica/BossBasicaDetalleNegra.webp",
+        "/products/BossBasica/BossBasicaDobladaNegra.webp"
       ],
       "available_stock": 4
     },
@@ -136,10 +136,10 @@
       "variant": "L",
       "price": 70000,
       "images": [
-        "/products/BossBasica/BossBasicaFrenteNegra.jpg",
-        "/products/BossBasica/BossBasicaAtrasNegra.jpg",
-        "/products/BossBasica/BossBasicaDetalleNegra.jpg",
-        "/products/BossBasica/BossBasicaDobladaNegra.jpg"
+        "/products/BossBasica/BossBasicaFrenteNegra.webp",
+        "/products/BossBasica/BossBasicaAtrasNegra.webp",
+        "/products/BossBasica/BossBasicaDetalleNegra.webp",
+        "/products/BossBasica/BossBasicaDobladaNegra.webp"
       ],
       "available_stock": 2
     },
@@ -151,10 +151,10 @@
       "variant": "M",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteBlanca.jpg",
-        "/products/BossFranja/bossFranjaAtrasBlanca.jpg",
-        "/products/BossFranja/bossFranjaDetalleBlanca.jpg",
-        "/products/BossFranja/bossFranjaDobladaBlanca.jpg"
+        "/products/BossFranja/bossFranjaFrenteBlanca.webp",
+        "/products/BossFranja/bossFranjaAtrasBlanca.webp",
+        "/products/BossFranja/bossFranjaDetalleBlanca.webp",
+        "/products/BossFranja/bossFranjaDobladaBlanca.webp"
       ],
       "available_stock": 4
     },
@@ -165,10 +165,10 @@
       "variant": "L",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteAzul.jpg",
-        "/products/BossFranja/bossFranjaAtrasAzul.jpg",
-        "/products/BossFranja/bossFranjaDetalleAzul.jpg",
-        "/products/BossFranja/bossFranjaDobladaAzul.jpg"
+        "/products/BossFranja/bossFranjaFrenteAzul.webp",
+        "/products/BossFranja/bossFranjaAtrasAzul.webp",
+        "/products/BossFranja/bossFranjaDetalleAzul.webp",
+        "/products/BossFranja/bossFranjaDobladaAzul.webp"
       ],
       "available_stock": 2
     },
@@ -180,10 +180,10 @@
       "variant": "M",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteNegra.jpg",
-        "/products/BossFranja/bossFranjaAtrasNegra.jpg",
-        "/products/BossFranja/bossFranjaDetalleNegra.jpg",
-        "/products/BossFranja/bossFranjaDobladaNegra.jpg"
+        "/products/BossFranja/bossFranjaFrenteNegra.webp",
+        "/products/BossFranja/bossFranjaAtrasNegra.webp",
+        "/products/BossFranja/bossFranjaDetalleNegra.webp",
+        "/products/BossFranja/bossFranjaDobladaNegra.webp"
       ],
       "available_stock": 3
     },
@@ -194,10 +194,10 @@
       "variant": "L",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteNegra.jpg",
-        "/products/BossFranja/bossFranjaAtrasNegra.jpg",
-        "/products/BossFranja/bossFranjaDetalleNegra.jpg",
-        "/products/BossFranja/bossFranjaDobladaNegra.jpg"
+        "/products/BossFranja/bossFranjaFrenteNegra.webp",
+        "/products/BossFranja/bossFranjaAtrasNegra.webp",
+        "/products/BossFranja/bossFranjaDetalleNegra.webp",
+        "/products/BossFranja/bossFranjaDobladaNegra.webp"
       ],
       "available_stock": 2
     },
@@ -209,10 +209,10 @@
       "variant": "M",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteBeige.jpg",
-        "/products/BossFranja/bossFranjaAtrasBeige.jpg",
-        "/products/BossFranja/bossFranjaDetalleBeige.jpg",
-        "/products/BossFranja/bossFranjaDobladaBeige.jpg"
+        "/products/BossFranja/bossFranjaFrenteBeige.webp",
+        "/products/BossFranja/bossFranjaAtrasBeige.webp",
+        "/products/BossFranja/bossFranjaDetalleBeige.webp",
+        "/products/BossFranja/bossFranjaDobladaBeige.webp"
       ],
       "available_stock": 3
     },
@@ -223,10 +223,10 @@
       "variant": "L",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteBeige.jpg",
-        "/products/BossFranja/bossFranjaAtrasBeige.jpg",
-        "/products/BossFranja/bossFranjaDetalleBeige.jpg",
-        "/products/BossFranja/bossFranjaDobladaBeige.jpg"
+        "/products/BossFranja/bossFranjaFrenteBeige.webp",
+        "/products/BossFranja/bossFranjaAtrasBeige.webp",
+        "/products/BossFranja/bossFranjaDetalleBeige.webp",
+        "/products/BossFranja/bossFranjaDobladaBeige.webp"
       ],
       "available_stock": 2
     },
@@ -238,10 +238,10 @@
       "variant": "M",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteRoja.jpg",
-        "/products/BossFranja/bossFranjaAtrasRoja.jpg",
-        "/products/BossFranja/bossFranjaDetalleRoja.jpg",
-        "/products/BossFranja/bossFranjaDobladaRoja.jpg"
+        "/products/BossFranja/bossFranjaFrenteRoja.webp",
+        "/products/BossFranja/bossFranjaAtrasRoja.webp",
+        "/products/BossFranja/bossFranjaDetalleRoja.webp",
+        "/products/BossFranja/bossFranjaDobladaRoja.webp"
       ],
       "available_stock": 3
     },
@@ -252,10 +252,10 @@
       "variant": "L",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteRoja.jpg",
-        "/products/BossFranja/bossFranjaAtrasRoja.jpg",
-        "/products/BossFranja/bossFranjaDetalleRoja.jpg",
-        "/products/BossFranja/bossFranjaDobladaRoja.jpg"
+        "/products/BossFranja/bossFranjaFrenteRoja.webp",
+        "/products/BossFranja/bossFranjaAtrasRoja.webp",
+        "/products/BossFranja/bossFranjaDetalleRoja.webp",
+        "/products/BossFranja/bossFranjaDobladaRoja.webp"
       ],
       "available_stock": 2
     },
@@ -267,10 +267,10 @@
       "variant": "M",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteVerde.jpg",
-        "/products/BossFranja/bossFranjaAtrasVerde.jpg",
-        "/products/BossFranja/bossFranjaDetalleVerde.jpg",
-        "/products/BossFranja/bossFranjaDobladaVerde.jpg"
+        "/products/BossFranja/bossFranjaFrenteVerde.webp",
+        "/products/BossFranja/bossFranjaAtrasVerde.webp",
+        "/products/BossFranja/bossFranjaDetalleVerde.webp",
+        "/products/BossFranja/bossFranjaDobladaVerde.webp"
       ],
       "available_stock": 3
     },
@@ -281,10 +281,10 @@
       "variant": "L",
       "price": 80000,
       "images": [
-        "/products/BossFranja/bossFranjaFrenteVerde.jpg",
-        "/products/BossFranja/bossFranjaAtrasVerde.jpg",
-        "/products/BossFranja/bossFranjaDetalleVerde.jpg",
-        "/products/BossFranja/bossFranjaDobladaVerde.jpg"
+        "/products/BossFranja/bossFranjaFrenteVerde.webp",
+        "/products/BossFranja/bossFranjaAtrasVerde.webp",
+        "/products/BossFranja/bossFranjaDetalleVerde.webp",
+        "/products/BossFranja/bossFranjaDobladaVerde.webp"
       ],
       "available_stock": 2
     },
@@ -296,10 +296,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/BunnyPolo/BunnyFrenteAzul.jpg",
-        "/products/BunnyPolo/BunnyAtrasAzul.jpg",
-        "/products/BunnyPolo/BunnyDetalleAzul.jpg",
-        "/products/BunnyPolo/BunnyDobladaAzul.jpg"
+        "/products/BunnyPolo/BunnyFrenteAzul.webp",
+        "/products/BunnyPolo/BunnyAtrasAzul.webp",
+        "/products/BunnyPolo/BunnyDetalleAzul.webp",
+        "/products/BunnyPolo/BunnyDobladaAzul.webp"
       ],
       "available_stock": 5
     },
@@ -310,10 +310,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/BunnyPolo/BunnyFrenteBlanca.jpg",
-        "/products/BunnyPolo/BunnyAtrasBlanca.jpg",
-        "/products/BunnyPolo/BunnyDetalleBlanca.jpg",
-        "/products/BunnyPolo/BunnyDobladaBlanca.jpg"
+        "/products/BunnyPolo/BunnyFrenteBlanca.webp",
+        "/products/BunnyPolo/BunnyAtrasBlanca.webp",
+        "/products/BunnyPolo/BunnyDetalleBlanca.webp",
+        "/products/BunnyPolo/BunnyDobladaBlanca.webp"
       ],
       "available_stock": 3
     },
@@ -324,10 +324,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/BunnyPolo/BunnyFrenteGris.jpg",
-        "/products/BunnyPolo/BunnyAtrasGris.jpg",
-        "/products/BunnyPolo/BunnyDetalleGris.jpg",
-        "/products/BunnyPolo/BunnyDobladaGris.jpg"
+        "/products/BunnyPolo/BunnyFrenteGris.webp",
+        "/products/BunnyPolo/BunnyAtrasGris.webp",
+        "/products/BunnyPolo/BunnyDetalleGris.webp",
+        "/products/BunnyPolo/BunnyDobladaGris.webp"
       ],
       "available_stock": 4
     },
@@ -338,10 +338,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/BunnyPolo/BunnyFrenteGris.jpg",
-        "/products/BunnyPolo/BunnyAtrasGris.jpg",
-        "/products/BunnyPolo/BunnyDetalleGris.jpg",
-        "/products/BunnyPolo/BunnyDobladaGris.jpg"
+        "/products/BunnyPolo/BunnyFrenteGris.webp",
+        "/products/BunnyPolo/BunnyAtrasGris.webp",
+        "/products/BunnyPolo/BunnyDetalleGris.webp",
+        "/products/BunnyPolo/BunnyDobladaGris.webp"
       ],
       "available_stock": 2
     },
@@ -352,10 +352,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/BunnyPolo/BunnyFrenteNegra.jpg",
-        "/products/BunnyPolo/BunnyAtrasNegra.jpg",
-        "/products/BunnyPolo/BunnyDetalleNegra.jpg",
-        "/products/BunnyPolo/BunnyDobladaNegra.jpg"
+        "/products/BunnyPolo/BunnyFrenteNegra.webp",
+        "/products/BunnyPolo/BunnyAtrasNegra.webp",
+        "/products/BunnyPolo/BunnyDetalleNegra.webp",
+        "/products/BunnyPolo/BunnyDobladaNegra.webp"
       ],
       "available_stock": 4
     },
@@ -366,10 +366,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/BunnyPolo/BunnyFrenteNegra.jpg",
-        "/products/BunnyPolo/BunnyAtrasNegra.jpg",
-        "/products/BunnyPolo/BunnyDetalleNegra.jpg",
-        "/products/BunnyPolo/BunnyDobladaNegra.jpg"
+        "/products/BunnyPolo/BunnyFrenteNegra.webp",
+        "/products/BunnyPolo/BunnyAtrasNegra.webp",
+        "/products/BunnyPolo/BunnyDetalleNegra.webp",
+        "/products/BunnyPolo/BunnyDobladaNegra.webp"
       ],
       "available_stock": 2
     },
@@ -381,10 +381,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteAzul.jpg",
-        "/products/LacostePolo/LacosteAtrasAzul.jpg",
-        "/products/LacostePolo/LacosteDetalleAzul.jpg",
-        "/products/LacostePolo/LacosteDobladaAzul.jpg"
+        "/products/LacostePolo/LacosteFrenteAzul.webp",
+        "/products/LacostePolo/LacosteAtrasAzul.webp",
+        "/products/LacostePolo/LacosteDetalleAzul.webp",
+        "/products/LacostePolo/LacosteDobladaAzul.webp"
       ],
       "available_stock": 4
     },
@@ -395,10 +395,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteBlanca.jpg",
-        "/products/LacostePolo/LacosteAtrasBlanca.jpg",
-        "/products/LacostePolo/LacosteDetalleBlanca.jpg",
-        "/products/LacostePolo/LacosteDobladaBlanca.jpg"
+        "/products/LacostePolo/LacosteFrenteBlanca.webp",
+        "/products/LacostePolo/LacosteAtrasBlanca.webp",
+        "/products/LacostePolo/LacosteDetalleBlanca.webp",
+        "/products/LacostePolo/LacosteDobladaBlanca.webp"
       ],
       "available_stock": 2
     },
@@ -409,10 +409,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteNegra.jpg",
-        "/products/LacostePolo/LacosteAtrasNegra.jpg",
-        "/products/LacostePolo/LacosteDetalleNegra.jpg",
-        "/products/LacostePolo/LacosteDobladaNegra.jpg"
+        "/products/LacostePolo/LacosteFrenteNegra.webp",
+        "/products/LacostePolo/LacosteAtrasNegra.webp",
+        "/products/LacostePolo/LacosteDetalleNegra.webp",
+        "/products/LacostePolo/LacosteDobladaNegra.webp"
       ],
       "available_stock": 3
     },
@@ -423,10 +423,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteNegra.jpg",
-        "/products/LacostePolo/LacosteAtrasNegra.jpg",
-        "/products/LacostePolo/LacosteDetalleNegra.jpg",
-        "/products/LacostePolo/LacosteDobladaNegra.jpg"
+        "/products/LacostePolo/LacosteFrenteNegra.webp",
+        "/products/LacostePolo/LacosteAtrasNegra.webp",
+        "/products/LacostePolo/LacosteDetalleNegra.webp",
+        "/products/LacostePolo/LacosteDobladaNegra.webp"
       ],
       "available_stock": 2
     },
@@ -437,10 +437,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteVerde.jpg",
-        "/products/LacostePolo/LacosteAtrasVerde.jpg",
-        "/products/LacostePolo/LacosteDetalleVerde.jpg",
-        "/products/LacostePolo/LacosteDobladaVerde.jpg"
+        "/products/LacostePolo/LacosteFrenteVerde.webp",
+        "/products/LacostePolo/LacosteAtrasVerde.webp",
+        "/products/LacostePolo/LacosteDetalleVerde.webp",
+        "/products/LacostePolo/LacosteDobladaVerde.webp"
       ],
       "available_stock": 3
     },
@@ -451,10 +451,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteVerde.jpg",
-        "/products/LacostePolo/LacosteAtrasVerde.jpg",
-        "/products/LacostePolo/LacosteDetalleVerde.jpg",
-        "/products/LacostePolo/LacosteDobladaVerde.jpg"
+        "/products/LacostePolo/LacosteFrenteVerde.webp",
+        "/products/LacostePolo/LacosteAtrasVerde.webp",
+        "/products/LacostePolo/LacosteDetalleVerde.webp",
+        "/products/LacostePolo/LacosteDobladaVerde.webp"
       ],
       "available_stock": 2
     },
@@ -465,10 +465,10 @@
       "variant": "M",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteBeige.jpg",
-        "/products/LacostePolo/LacosteAtrasBeige.jpg",
-        "/products/LacostePolo/LacosteDetalleBeige.jpg",
-        "/products/LacostePolo/LacosteDobladaBeige.jpg"
+        "/products/LacostePolo/LacosteFrenteBeige.webp",
+        "/products/LacostePolo/LacosteAtrasBeige.webp",
+        "/products/LacostePolo/LacosteDetalleBeige.webp",
+        "/products/LacostePolo/LacosteDobladaBeige.webp"
       ],
       "available_stock": 3
     },
@@ -479,10 +479,10 @@
       "variant": "L",
       "price": 90000,
       "images": [
-        "/products/LacostePolo/LacosteFrenteBeige.jpg",
-        "/products/LacostePolo/LacosteAtrasBeige.jpg",
-        "/products/LacostePolo/LacosteDetalleBeige.jpg",
-        "/products/LacostePolo/LacosteDobladaBeige.jpg"
+        "/products/LacostePolo/LacosteFrenteBeige.webp",
+        "/products/LacostePolo/LacosteAtrasBeige.webp",
+        "/products/LacostePolo/LacosteDetalleBeige.webp",
+        "/products/LacostePolo/LacosteDobladaBeige.webp"
       ],
       "available_stock": 2
     }

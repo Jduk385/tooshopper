@@ -8,7 +8,7 @@ export default function ProductCard({ product, onAdd }) {
 
   const v = variants[vIndex] || {};
   const [front, back] = v.images || [];
-  const placeholder = "/marcas.jpg"; // ya lo tienes en /public
+  const placeholder = "/marcas.webp"; // ya lo tienes en /public
 
   return (
     <article className="product-card">

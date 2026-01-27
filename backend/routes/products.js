@@ -40,7 +40,7 @@ function hasExt(p) {
   return /\.[a-z0-9]{2,5}$/i.test(p || '');
 }
 
-const IMAGE_EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif']);
+const IMAGE_EXTS = new Set(['.webp', '.jpeg', '.png', '.webp', '.avif']);
 
 // puntuación para ordenar (frente > atrás > detalle > doblada)
 function scoreName(name) {

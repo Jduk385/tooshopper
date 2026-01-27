@@ -44,14 +44,14 @@ export default function ProductCatalogNuevo() {
     const colors = ['BLANCO', 'NEGRO', 'BEIGE', 'ROJO'];
     return colors.map((color) => {
       const suffix = FILE_SUFFIX[color]; // Blanca/Negra/Beige/Roja
-      const path = `/products/BossFranja/bossFranjaFrente${suffix}.jpg`;
+      const path = `/products/BossFranja/bossFranjaFrente${suffix}.webp`;
       return {
         key: `BOSS-FRANJA-${color}`,
         color,
         name: 'Camiseta Hugo Boss con Franja',
         basePrice: 80000,
         image: resolveSrc(path),
-        imageUpper: resolveSrc(path.replace('.jpg', '.JPG')), // fallback si la extensión está en mayúsculas
+        imageUpper: resolveSrc(path.replace('.webp', '.webp')), // fallback si la extensión está en mayúsculas
       };
     });
   }, []);
@@ -114,11 +114,11 @@ export default function ProductCatalogNuevo() {
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                 loading="lazy"
                 onError={(e) => {
-                  // 1) intenta .JPG  2) si tampoco existe, usa /marcas.jpg
+                  // 1) intenta .webp  2) si tampoco existe, usa /marcas.webp
                   if (e.currentTarget.src !== card.imageUpper) {
                     e.currentTarget.src = card.imageUpper || '';
                   } else {
-                    e.currentTarget.src = resolveSrc('/marcas.jpg') || '';
+                    e.currentTarget.src = resolveSrc('/marcas.webp') || '';
                   }
                 }}
               />

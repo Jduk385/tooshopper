@@ -8,7 +8,7 @@ const withBase = (p) => `${BASE_URL}/${String(p || "").replace(/^\//, "")}`;
 const isHttp = (s) => /^https?:\/\//i.test(String(s || ""));
 
 function resolveSrc(src) {
-  if (!src) return withBase("/marcas.jpg");
+  if (!src) return withBase("/marcas.webp");
   if (isHttp(src)) return src;
   return withBase(src);
 }
@@ -180,7 +180,7 @@ export default function Buscar() {
               const firstImg =
                 Array.isArray(p.images) && p.images[0]
                   ? resolveSrc(p.images[0])
-                  : resolveSrc("/marcas.jpg");
+                  : resolveSrc("/marcas.webp");
 
               return (
                 <article
@@ -200,7 +200,7 @@ export default function Buscar() {
                     src={firstImg}
                     alt={p.name}
                     style={{ width: "100%", height: 260, objectFit: "cover" }}
-                    onError={(e) => (e.currentTarget.src = resolveSrc("/marcas.jpg"))}
+                    onError={(e) => (e.currentTarget.src = resolveSrc("/marcas.webp"))}
                   />
                   <div style={{ padding: "10px 12px" }}>
                     <h3 style={{ fontSize: 16, margin: "4px 0" }}>{p.name}</h3>

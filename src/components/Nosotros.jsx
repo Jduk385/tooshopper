@@ -86,9 +86,9 @@ export default function Nosotros() {
         <p className="gallery-sub">Nuestro proceso real: selección, control y empaque.</p>
         <div className="gallery-grid">
           {/* Coloca estas imágenes en /public/images/ ... o cambia las rutas */}
-          <img src="/images/nosotros-1.jpg" alt="Selección de prendas" />
-          <img src="/images/nosotros-2.jpg" alt="Control de calidad" />
-          <img src="/images/nosotros-3.jpg" alt="Empaque para envío" />
+          <img src="/images/nosotros-1.webp" alt="Selección de prendas" />
+          <img src="/images/nosotros-2.webp" alt="Control de calidad" />
+          <img src="/images/nosotros-3.webp" alt="Empaque para envío" />
         </div>
       </section>
 

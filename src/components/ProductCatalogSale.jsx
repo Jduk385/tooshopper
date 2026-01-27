@@ -71,7 +71,7 @@ export default function ProductCatalogSale() {
       .map(([famKey, v]) => {
         const withStock = v.variants.find(x => (x.stock ?? 0) > 0) || v.variants[0];
         const idForDetail = withStock?.id || famKey;
-        const front = resolveSrc(v.images[0]) || resolveSrc("/marcas.jpg");
+        const front = resolveSrc(v.images[0]) || resolveSrc("/marcas.webp");
         const back  = resolveSrc(v.images[1]) || front;
         const price = Math.min(...v.variants.map(x => x.price || 0).filter(Boolean)) || (withStock?.price || 0);
         return { id: idForDetail, name: v.name, price, front, back };
@@ -88,8 +88,8 @@ export default function ProductCatalogSale() {
     id: "BOSS-FRANJA-1",
     name: "Camiseta Hugo Boss con Franja Negra",
     price: 80000,
-    front: resolveSrc("/products/BossFranja/bossFranjaFrenteNegra.jpg") || resolveSrc("/marcas.jpg"),
-    back:  resolveSrc("/products/BossFranja/bossFranjaAtrasNegra.jpg") || resolveSrc("/products/BossFranja/bossFranjaFrenteNegra.jpg") || resolveSrc("/marcas.jpg"),
+    front: resolveSrc("/products/BossFranja/bossFranjaFrenteNegra.webp") || resolveSrc("/marcas.webp"),
+    back:  resolveSrc("/products/BossFranja/bossFranjaAtrasNegra.webp") || resolveSrc("/products/BossFranja/bossFranjaFrenteNegra.webp") || resolveSrc("/marcas.webp"),
   }), []);
   const finalTiles = useMemo(() => {
     const merged = [bossFranja, ...withoutLacoste];
@@ -163,14 +163,14 @@ export default function ProductCatalogSale() {
                     src={p.front}
                     alt={p.name}
                     loading="lazy"
-                    onError={(e)=>{ e.currentTarget.src = resolveSrc("/marcas.jpg"); }}
+                    onError={(e)=>{ e.currentTarget.src = resolveSrc("/marcas.webp"); }}
                   />
                   <img
                     className="img back"
                     src={p.back || p.front}
                     alt={p.name}
                     loading="lazy"
-                    onError={(e)=>{ e.currentTarget.src = p.front || resolveSrc("/marcas.jpg"); }}
+                    onError={(e)=>{ e.currentTarget.src = p.front || resolveSrc("/marcas.webp"); }}
                   />
                 </div>
 
@@ -233,9 +233,9 @@ function familyFromSku(sku){const p=String(sku||"").split("-");return p.length>=
 
 /* ===== Demo ===== */
 const DEMO_ITEMS = [
-  { _id:"BOSS-BASICA-1-M", sku:"BOSS-BASICA-1-NEGRA", name:"Camiseta Hugo Boss Básica Negra", price:70000, images:["/products/BossBasica/BossBasicaFrenteNegra.jpg","/products/BossBasica/BossBasicaEspaldaNegra.jpg"], variant:"M", available_stock:4 },
-  { _id:"LACOSTE-POLO-1-M", sku:"LACOSTE-POLO-1-AZUL", name:"Camiseta Polo Lacoste Clásica Azul", price:70000, images:["/products/LacostePoloClasica/LacosteAzul.jpg","/products/LacostePoloClasica/LacosteAzul2.jpg"], variant:"M", available_stock:3 },
-  { _id:"RALPH-BASICA-1-M", sku:"RALPH-BASICA-1-BLANCA", name:"Camiseta Ralph Lauren Básica Blanca", price:90000, images:["/products/RalphBasica/RalphBlanca.jpg","/products/RalphBasica/RalphBlanca2.jpg"], variant:"M", available_stock:2 },
+  { _id:"BOSS-BASICA-1-M", sku:"BOSS-BASICA-1-NEGRA", name:"Camiseta Hugo Boss Básica Negra", price:70000, images:["/products/BossBasica/BossBasicaFrenteNegra.webp","/products/BossBasica/BossBasicaEspaldaNegra.webp"], variant:"M", available_stock:4 },
+  { _id:"LACOSTE-POLO-1-M", sku:"LACOSTE-POLO-1-AZUL", name:"Camiseta Polo Lacoste Clásica Azul", price:70000, images:["/products/LacostePoloClasica/LacosteAzul.webp","/products/LacostePoloClasica/LacosteAzul2.webp"], variant:"M", available_stock:3 },
+  { _id:"RALPH-BASICA-1-M", sku:"RALPH-BASICA-1-BLANCA", name:"Camiseta Ralph Lauren Básica Blanca", price:90000, images:["/products/RalphBasica/RalphBlanca.webp","/products/RalphBasica/RalphBlanca2.webp"], variant:"M", available_stock:2 },
 ];
 
 /* ===== CSS unificado (sin sale.css) ===== */

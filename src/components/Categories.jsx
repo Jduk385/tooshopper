@@ -10,7 +10,7 @@ function Categories() {
       <div className="categories-row">
         <Link to="/mujer" className="category" aria-label="Ver categoría Mujer">
           <img
-            src="/mujer.jpg"
+            src="/mujer.webp"
             alt="Categoría Mujer"
             loading="lazy"
             width="600"
@@ -24,7 +24,7 @@ function Categories() {
 
         <Link to="/hombre" className="category" aria-label="Ver categoría Hombre">
           <img
-            src="/hombre.jpg"
+            src="/hombre.webp"
             alt="Categoría Hombre"
             loading="lazy"
             width="600"
@@ -35,7 +35,7 @@ function Categories() {
 
         <Link to="/sale" className="category" aria-label="Ver ofertas">
           <img
-            src="/sale.jpg"
+            src="/sale.webp"
             alt="Categoría SALE"
             loading="lazy"
             width="600"
