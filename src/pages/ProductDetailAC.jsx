@@ -22,7 +22,7 @@ const COLOR_HEX = {
   ROJA: "#B91C1C",
   VERDE: "#0f4d2f",
   "VERDE OSCURO": "#0f4d2f",
-  BEIGE: "#D6D3D1",
+  BEIGE: "#965428",
   GRIS: "#9CA3AF",
 };
 const COLOR_KEYS = Object.keys(COLOR_HEX);
@@ -55,6 +55,18 @@ function stripColorWords(text) {
   return t.replace(re, " ").replace(/\s{2,}/g, " ").trim();
 }
 
+// ✅ id real de mongo aunque venga como _id o id
+function getMongoId(p) {
+  return String((p && (p._id || p.id || p.productId || p.variantId)) || "");
+}
+
+// ✅ imágenes aunque vengan como images o image
+function getImages(p) {
+  if (p && Array.isArray(p.images) && p.images.length) return p.images;
+  if (p && p.image) return [p.image];
+  return [];
+}
+
 export default function ProductDetailAC() {
   const { id } = useParams(); // /producto/:id (puede ser _id o prefijo de SKU)
   const navigate = useNavigate();
@@ -67,36 +79,24 @@ export default function ProductDetailAC() {
   const [size, setSize] = useState("");
   const [photo, setPhoto] = useState(0);
 
-  /** ======= Carga robusta del catálogo ======= */
+  /** ======= Carga del catálogo DESDE MONGO (API) ======= */
   useEffect(() => {
     let alive = true;
+
     (async () => {
       setLoading(true);
-      let ok = false;
-      const candidates = [
-        "/products.json",
-        "/products/products.json",
-        "/data/products.json",
-      ];
-
-      for (let i = 0; i < candidates.length; i++) {
-        try {
-          const r = await fetch(candidates[i], { cache: "no-store" });
-          if (!r.ok) continue;
-          const j = await r.json();
-          const arr = Array.isArray(j) ? j : j?.items ?? [];
-          if (arr && arr.length) {
-            if (alive) setItems(arr);
-            ok = true;
-            break;
-          }
-        } catch {
-          /* sigue intentando */
-        }
+      try {
+        const r = await fetch("/api/products?limit=250", { cache: "no-store" });
+        if (!r.ok) throw new Error("No OK");
+        const j = await r.json();
+        const arr = Array.isArray(j) ? j : (Array.isArray(j && j.items) ? j.items : []);
+        if (alive) setItems(Array.isArray(arr) ? arr : []);
+      } catch {
+        if (alive) setItems([]);
       }
-      if (!ok && alive) setItems([]);
       if (alive) setLoading(false);
     })();
+
     return () => {
       alive = false;
     };
@@ -107,9 +107,13 @@ export default function ProductDetailAC() {
     if (!items.length) return null;
 
     const idStr = String(id || "");
-    const exact = items.find((p) => String(p._id) === idStr);
 
+    // ✅ busca por _id o id
+    const exact = items.find((p) => getMongoId(p) === idStr);
+
+    // Si viene exacto, familia por SKU de ese producto; si no, intenta interpretar el id como "family"
     const famKey = exact ? familyFromSku(exact.sku) : familyFromSku(idStr);
+
     let famItems = items.filter((p) => familyFromSku(p.sku) === famKey);
 
     if (!famItems.length) {
@@ -120,7 +124,7 @@ export default function ProductDetailAC() {
       if (!famItems.length) return null;
     }
 
-    const rawName = famItems[0]?.name || "Producto";
+    const rawName = (famItems[0] && famItems[0].name) ? famItems[0].name : "Producto";
     const name = stripColorWords(baseName(rawName)); // título sin color
     const colors = {}; // { [color]: { variants: { [size]: item }, images: [] } }
     let price = 0;
@@ -128,16 +132,16 @@ export default function ProductDetailAC() {
     for (let i = 0; i < famItems.length; i++) {
       const p = famItems[i];
       const c = colorFromSkuOrName(p);
-      const sz = String(p.variant || "ÚNICA").toUpperCase();
+      const sz = String((p && (p.variant || p.size)) || "ÚNICA").toUpperCase();
 
       if (!colors[c]) colors[c] = { variants: {}, images: [] };
       colors[c].variants[sz] = p;
-      price = p.price != null ? p.price : price;
+      price = p && p.price != null ? p.price : price;
 
-      const imgs = Array.isArray(p.images) ? p.images : [];
+      const imgs = getImages(p);
       for (let k = 0; k < imgs.length; k++) {
         const src = imgs[k];
-        if (src && !colors[c].images.includes(src)) colors[c].images.push(src);
+        if (src && colors[c].images.indexOf(src) === -1) colors[c].images.push(src);
       }
     }
 
@@ -147,15 +151,14 @@ export default function ProductDetailAC() {
 
     if (exact) {
       initColor = colorFromSkuOrName(exact);
-      initSize = String(exact.variant || "ÚNICA").toUpperCase();
+      initSize = String((exact && (exact.variant || exact.size)) || "ÚNICA").toUpperCase();
     } else if (initColor) {
-      const sizes = Object.keys(colors[initColor]?.variants || {});
+      const sizes = Object.keys((colors[initColor] && colors[initColor].variants) || {});
       if (sizes.length) {
         initSize = sizes[0];
         for (let s = 0; s < sizes.length; s++) {
           const key = sizes[s];
-          const av =
-            (colors[initColor].variants[key]?.available_stock) || 0;
+          const av = ((colors[initColor].variants[key] && colors[initColor].variants[key].available_stock) || 0);
           if (av > 0) {
             initSize = key;
             break;
@@ -180,20 +183,22 @@ export default function ProductDetailAC() {
 
   const colorData = data.colors[color] || { variants: {}, images: [] };
   const current = colorData.variants[size] || null;
+
   const images =
     (Array.isArray(colorData.images) && colorData.images.length
       ? colorData.images
-      : current?.images) || [];
+      : (current ? getImages(current) : [])) || [];
 
-  const canAdd = !!current;
+  // Ahora revisamos que el producto exista Y que tenga stock disponible
+const canAdd = current && current.available_stock > 0;
 
   function onColorChange(c) {
     setColor(c);
-    const sizes = Object.keys(data.colors[c]?.variants || {});
+    const sizes = Object.keys((data.colors[c] && data.colors[c].variants) || {});
     let first = sizes.length ? sizes[0] : "";
     for (let i = 0; i < sizes.length; i++) {
       const key = sizes[i];
-      const av = data.colors[c].variants[key]?.available_stock || 0;
+      const av = (data.colors[c].variants[key] && data.colors[c].variants[key].available_stock) || 0;
       if (av > 0) {
         first = key;
         break;
@@ -202,23 +207,43 @@ export default function ProductDetailAC() {
     setSize(first);
     setPhoto(0);
   }
+
   function onSizeChange(s) {
     setSize(s);
   }
+
   function add() {
     if (!current) return;
+
+    const pid = getMongoId(current);
+    if (!pid) {
+      alert("Este producto no tiene ID válido en Mongo.");
+      return;
+    }
+
     const img =
-      images?.[0] || (Array.isArray(current.images) ? current.images[0] : "") || "";
+      (images && images[0]) ||
+      (Array.isArray(current.images) ? current.images[0] : "") ||
+      current.image ||
+      "";
+
+    const variant = String((current.variant || current.size || size || "")).toUpperCase();
+
     addToCart(
       {
-        _id: current._id,
-        id: current._id,
+        _id: pid,
+        id: pid,
+        productId: pid,
+        sku: current.sku || null,
+        variant: variant || null,
+        size: variant || "",
         name: data.name,
         price: current.price != null ? current.price : data.price || 0,
         image: img,
       },
       1
     );
+
     navigate("/carrito");
   }
 
@@ -310,20 +335,23 @@ export default function ProductDetailAC() {
           </div>
 
           {/* CTA */}
-          <button className="pdp-cta" onClick={add} disabled={!canAdd}>
-            {canAdd ? "Agregar al carrito" : "Sin stock"}
-          </button>
+<button className="pdp-cta" onClick={add} disabled={!canAdd}>
+  {canAdd ? "Agregar al carrito" : "Agotado"}
+</button>
 
           {/* Descripción */}
           <div className="pdp-accordion">
             <h4>Descripción</h4>
-            <p>Camiseta tipo polo de algodón suave. Corte clásico. Ideal para uso diario.</p>
+            <p>
+              Camiseta confeccionada en algodón peruano de alta suavidad.
+              Corte clásico y cómodo, ideal para uso diario.
+            </p>
 
             <h4>Información del producto</h4>
             <ul>
-              <li>Composición: 100% algodón</li>
+              <li>Composición: 100% algodón Jersey peruano</li>
               <li>Cuidados: lavar a máquina en frío</li>
-              <li>Hecho en Colombia</li>
+              <li>Corte clásico</li>
               <li>Familia: {Object.keys(data.colors)[0] || "—"}</li>
             </ul>
           </div>
@@ -332,4 +360,3 @@ export default function ProductDetailAC() {
     </section>
   );
 }
-

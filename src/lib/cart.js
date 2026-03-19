@@ -1,5 +1,3 @@
-// src/lib/cart.js
-// SHIM SIMPLE SIN try/catch
 const CART_KEY = "cart";
 const _mem = { cart: [] };
 
@@ -12,7 +10,7 @@ function read() {
   if (!hasLS()) return _mem.cart;
   const ls = window.localStorage;
   const raw = ls.getItem(CART_KEY) || "[]";
-  const arr = JSON.parse(raw); // asumimos válido porque lo escribimos nosotros
+  const arr = JSON.parse(raw);
   return Array.isArray(arr) ? arr : [];
 }
 
@@ -29,75 +27,72 @@ function write(arr) {
   }
 }
 
-// === API PÚBLICA ===
-export function getCart() {
-  return read();
-}
+export function getCart() { return read(); }
+export function setCart(next) { write(Array.isArray(next) ? next : []); }
+export function clearCart() { write([]); }
 
-export function setCart(next) {
-  write(Array.isArray(next) ? next : []);
-}
-
-export function clearCart() {
-  write([]);
-}
-
-// Agregar al carrito (modo simple, sin reglas de combo)
 export function addToCart(product, qty = 1, comboGroup = "") {
   const cart = read();
-  const id = (product && (product._id || product.id || product.sku)) || null;
+  const id = product?.productId || product?._id || product?.id || null;
   if (!id) return;
 
-  const keyGroup = comboGroup || (product && product.comboGroup) || "";
-  const idx = cart.findIndex(
-    (i) => i.id === id && ((i.comboGroup || "") === keyGroup)
-  );
-
-  const qtyNum = Math.max(1, Number(qty || 1));
-  const priceNum = Number(product && product.price) || 0;
-  const image =
-    (product && (product.image || (product.images && product.images[0]))) || "";
+  const keyGroup = comboGroup || product?.comboGroup || "";
+  const idx = cart.findIndex((i) => i.id === id && (i.comboGroup || "") === keyGroup);
 
   if (idx >= 0) {
-    const prev = Number(cart[idx].qty) || 1;
-    cart[idx] = { ...cart[idx], qty: Math.max(1, prev + qtyNum) };
+    cart[idx].qty = Math.max(1, (cart[idx].qty || 1) + qty);
   } else {
     cart.push({
-      id,                 // puede ser _id o sku
-      _id: product && product._id,
-      name: (product && product.name) || "Producto",
-      price: priceNum,
-      qty: qtyNum,
-      image,
+      id,
+      name: product.name || "Producto",
+      price: Number(product.price) || 0,
+      qty: Math.max(1, qty),
+      image: product.image || "",
       comboGroup: keyGroup,
+      color: product.color || "",
+      size: product.size || ""
     });
   }
   write(cart);
 }
 
-// Eliminar una línea específica
-export function removeFromCart(id, comboGroup = "") {
-  const cart = read().filter(
-    (i) => !(i.id === id && ((i.comboGroup || "") === (comboGroup || "")))
-  );
+export function addBundleToCart(items, bundleName = "Combo") {
+  const cart = read();
+  const groupId = `bundle-${Date.now()}`; 
+  
+  items.forEach(item => {
+    // 🎯 FIX: Se asegura de capturar el ID de Atlas para que el Checkout no de error
+    const realId = item.productId || item._id || item.id;
+
+    cart.push({
+      id: realId,
+      sku: item.sku || item.id || "SKU-GENERIC",
+      name: item.name,
+      price: Number(item.price) || 0,
+      qty: 1,
+      image: item.image || item.front || "",
+      comboGroup: groupId,
+      color: item.color || "Único",
+      size: item.chosenSize || item.size || "M"
+    });
+  });
   write(cart);
 }
 
-// Incrementar/decrementar cantidad
+export function removeFromCart(id, comboGroup = "") {
+  const cart = read().filter((i) => !(i.id === id && (i.comboGroup || "") === (comboGroup || "")));
+  write(cart);
+}
+
 export function updateQtyDelta(id, comboGroup = "", delta = 0) {
   const cart = read();
-  const idx = cart.findIndex(
-    (i) => i.id === id && ((i.comboGroup || "") === (comboGroup || ""))
-  );
+  const idx = cart.findIndex((i) => i.id === id && (i.comboGroup || "") === (comboGroup || ""));
   if (idx < 0) return;
-  const next = Math.max(1, (Number(cart[idx].qty) || 1) + Number(delta || 0));
-  cart[idx].qty = next;
+  cart[idx].qty = Math.max(1, (cart[idx].qty || 1) + delta);
   write(cart);
 }
 
-// Borrar por grupo (si no usas combos, es inofensivo)
 export function removeComboGroup(group = "") {
-  const g = group || "";
-  const cart = read().filter((i) => (i.comboGroup || "") !== g);
+  const cart = read().filter((i) => (i.comboGroup || "") !== group);
   write(cart);
 }

@@ -10,7 +10,7 @@ function PromoBanner() {
       <img src={banner} alt="Colección nueva" className="promo-image" />
 
       <div className="promo-content">
-        <h2>Productos nuevos 2025</h2>
+        <h2>Productos nuevos 2026</h2>
         <p>Descubre los estilos que están marcando tendencia esta temporada.</p>
 
         <button onClick={() => navigate('/nuevo')}>

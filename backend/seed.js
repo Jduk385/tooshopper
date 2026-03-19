@@ -45,8 +45,8 @@ async function run() {
       }
     ];
 
-    await Product.deleteMany({});
-    await Product.insertMany(productos);
+    //await Product.deleteMany({});
+    //await Product.insertMany(productos);
 
     console.log('🌱 Productos de prueba insertados correctamente');
     process.exit(0);

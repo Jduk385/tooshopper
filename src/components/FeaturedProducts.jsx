@@ -1,4 +1,3 @@
-// src/components/FeaturedProducts.jsx
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './FeaturedProducts.css';
@@ -10,33 +9,36 @@ function familyFromSku(sku) {
     ? (parts[0] + '-' + parts[1]).toUpperCase()
     : String(sku || '').toUpperCase();
 }
+
 function firstImage(p) {
-  if (p && p.image) return p.image;
+  // En MongoDB Atlas las imágenes vienen en el array "images"
   if (p && Array.isArray(p.images) && p.images.length) return p.images[0];
+  if (p && p.image) return p.image;
   return null;
 }
+
 function productPath(p) {
-  if (p && p.sku) return '/producto/' + familyFromSku(p.sku);
+  // PRIORIDAD: Usar el _id de MongoDB para que el backend lo encuentre siempre
   if (p && p._id) return '/producto/' + String(p._id);
-  if (p && p.id)  return '/producto/' + String(p.id);
+  if (p && p.sku) return '/producto/' + familyFromSku(p.sku);
   return '/nuevo';
 }
-// 🔹 quitar paréntesis como "(M)", "(L)", "(XL)" del nombre mostrado
+
 function cleanName(name) {
   return String(name || '')
-    .replace(/\s*\([^()]*\)\s*/g, ' ') // elimina cualquier "(...)"
-    .replace(/\s{2,}/g, ' ')           // compacta espacios dobles
+    .replace(/\s*\([^()]*\)\s*/g, ' ') 
+    .replace(/\s{2,}/g, ' ')           
     .trim();
 }
-// ====================
 
 export default function FeaturedProducts() {
   const navigate = useNavigate();
   const [allItems, setAllItems] = useState([]);
-  const [items, setItems] = useState([]);     // ← solo las 5 tarjetas finales
+  const [items, setItems] = useState([]);     
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState('');
 
+  // 1. Cargar datos desde el Backend (MongoDB)
   useEffect(() => {
     let alive = true;
     (async function () {
@@ -44,27 +46,25 @@ export default function FeaturedProducts() {
         setLoading(true);
         setErr('');
 
-        // cargar desde el mismo JSON que usa tu ProductDetailAC
-        const sources = ['/products.json', '/products/products.json', '/data/products.json'];
-        let ok = false;
-        for (let i = 0; i < sources.length; i++) {
-          try {
-            const r = await fetch(sources[i], { cache: 'no-store' });
-            if (!r.ok) continue;
-            const j = await r.json();
-            const arr = Array.isArray(j) ? j : (j && Array.isArray(j.items) ? j.items : []);
-            if (arr && arr.length) {
-              if (alive) setAllItems(arr);
-              ok = true;
-              break;
-            }
-          } catch {
-            // probar siguiente
+        // Llamada a tu API real
+        const response = await fetch('http://localhost:5000/api/products', { cache: 'no-store' });
+        
+        if (!response.ok) throw new Error('Error al conectar con el servidor');
+        
+        const data = await response.json();
+        
+        // Tu backend devuelve { items: [...] }, extraemos esa lista
+        const arr = Array.isArray(data.items) ? data.items : [];
+
+        if (alive) {
+          if (arr.length > 0) {
+            setAllItems(arr);
+          } else {
+            setErr('No se encontraron productos en la base de datos');
           }
         }
-        if (!ok && alive) setErr('No se pudieron cargar los productos');
-      } catch {
-        if (alive) setErr('Error inesperado');
+      } catch (error) {
+        if (alive) setErr('Error cargando productos: ' + error.message);
       } finally {
         if (alive) setLoading(false);
       }
@@ -72,23 +72,22 @@ export default function FeaturedProducts() {
     return () => { alive = false; };
   }, []);
 
-  // seleccionar exactamente las 5 referencias pedidas (preferir variante M si existe)
+  // 2. Filtrar y seleccionar los 5 productos específicos
   useEffect(() => {
     if (!allItems.length) return;
 
-    // SKUs objetivo (los que nos pasaste en tu JSON)
     const TARGETS_IN_ORDER = [
-      'POLO-BASICA-BLANCO', // RL blanca
-      'POLO-BASICA-AZUL',   // RL azul (oscuro)
-      'BOSS-BASICA-NEGRO',  // Boss negra
-      'BOSS-BASICA-BLANCO', // Boss blanca
-      'BOSS-BASICA-AZUL'    // Boss azul
+      'POLO-BASICA-BLANCO',
+      'POLO-BASICA-AZUL',
+      'BOSS-BASICA-NEGRO',
+      'BOSS-BASICA-BLANCO',
+      'BOSS-BASICA-AZUL'
     ];
 
     function pickOneBySkuPreferM(arr, sku) {
       const list = arr.filter(p => String(p.sku || '').toUpperCase() === sku);
       if (!list.length) return null;
-      // preferimos variante M si existe, si no la primera
+      // Preferimos variante M (la que acabamos de importar a Atlas)
       const m = list.find(p => String(p.variant || '').toUpperCase() === 'M');
       return m || list[0];
     }
@@ -99,14 +98,15 @@ export default function FeaturedProducts() {
       if (item) selected.push(item);
     }
 
-    setItems(selected.slice(0, 5));
+    // Si por alguna razón no encuentra los SKUs, mostramos los primeros 5 de la DB
+    setItems(selected.length ? selected.slice(0, 5) : allItems.slice(0, 5));
   }, [allItems]);
 
   return (
     <section className="featured-products" aria-labelledby="featured-title">
       <h2 id="featured-title" className="title">Productos Destacados</h2>
 
-      {loading && <p style={{ textAlign: 'center' }}>Cargando productos…</p>}
+      {loading && <p style={{ textAlign: 'center' }}>Conectando con inventario real…</p>}
       {err && !loading && <p style={{ textAlign: 'center', color: 'crimson' }}>{err}</p>}
 
       {!loading && !err && (
@@ -114,11 +114,10 @@ export default function FeaturedProducts() {
           {items.map((p) => {
             const img = firstImage(p);
             const to = productPath(p);
-            const title = cleanName(p?.name); // ← ✅ nombre sin talla
+            const title = cleanName(p?.name);
 
             return (
-              <article className="product-card" key={p?._id || p?.id || p?.sku}>
-                {/* Imagen clickeable */}
+              <article className="product-card" key={p?._id || p?.sku}>
                 <Link to={to} aria-label={`Ver ${title}`} className="image-wrap">
                   <div
                     style={{
@@ -130,8 +129,6 @@ export default function FeaturedProducts() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: 13,
-                      color: '#888',
                       overflow: 'hidden'
                     }}
                   >
@@ -143,46 +140,40 @@ export default function FeaturedProducts() {
                         loading="lazy"
                       />
                     ) : (
-                      'Sin imagen'
+                      <span style={{ fontSize: 13, color: '#888' }}>Sin imagen</span>
                     )}
                   </div>
                 </Link>
 
-                {/* Título clickeable SIN talla */}
-                <h3 style={{ marginBottom: 10 }}>
-                  <Link to={to} className="product-link">{title}</Link>
+                <h3 className="product-title">
+                  <Link to={to} className="product-link" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {title}
+                  </Link>
                 </h3>
 
-                {/* ✅ SIN precio, SIN talla */}
-
-                {/* Botón “Ver más” que navega */}
                 <button
-                  type="button"
-                  className="btn-more"
-                  onClick={() => navigate(to)}
-                  aria-label={`Ver más de ${title}`}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: 8,
-                    border: '1px solid #111',
-                    background: '#111',
-                    color: '#fff',
-                    fontWeight: 600,
-                    cursor: 'pointer'
-                  }}
-                >
-                  Ver más
-                </button>
+  type="button"
+  className="btn-more"
+  onClick={() => p.available_stock > 0 && navigate(to)} 
+  disabled={p.available_stock <= 0} 
+  style={{
+    width: '100%',
+    padding: '10px 12px',
+    borderRadius: 8,
+    border: 'none',
+    background: p.available_stock > 0 ? '#111' : '#ccc', // Gris si es 0
+    color: '#fff',
+    fontWeight: 600,
+    cursor: p.available_stock > 0 ? 'pointer' : 'not-allowed',
+    marginTop: '10px'
+  }}
+>
+  {p.available_stock > 0 ? 'Ver más' : 'Agotado'} 
+</button>
+
               </article>
             );
           })}
-
-          {items.length === 0 && (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', opacity: 0.8 }}>
-              No hay productos destacados todavía.
-            </div>
-          )}
         </div>
       )}
     </section>

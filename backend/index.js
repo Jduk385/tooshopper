@@ -6,6 +6,7 @@ const cors = require('cors');
 const compression = require('compression');
 const mongoose = require('mongoose');
 
+
 const app = express();
 
 // ---- CORS ----
@@ -43,6 +44,7 @@ try { app.use('/api/auth', require('./routes/auth')); } catch {}
 try { app.use('/api/products', require('./routes/products')); } catch {}
 try { app.use('/api/orders', require('./routes/orders')); } catch {}
 try { app.use('/api/payments/manual', require('./routes/paymentsManual')); } catch {}
+try { app.use('/api/combos', require('./routes/combos')); } catch {}
 
 // ---- 404 API ----
 app.use('/api', (req, res) => res.status(404).json({ message: 'Ruta no encontrada' }));

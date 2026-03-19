@@ -30,7 +30,7 @@ export default function Nosotros() {
             prenda tenga el ajuste, textura y durabilidad que mereces.
           </p>
           <p>
-            Nos especializamos en prendas <strong>100% algodón</strong>  calidad
+            Nos especializamos en prendas <strong>100% algodón</strong> calidad
             <strong> y durabilidad</strong>, revisadas una a una antes de enviarlas.
           </p>
         </div>
@@ -39,7 +39,7 @@ export default function Nosotros() {
           <h2>Nuestra historia</h2>
           <p>
             Nacimos después de visitar fábricas y talleres en Lima (Perú), donde
-            encontramos la calidad que queríamos traer a Colombia. El algodón peruano es de muy alta calidad a nivel mundial, Empezamos vendiendo a
+            encontramos la calidad que queríamos traer a Colombia. El algodón peruano es de muy alta calidad a nivel mundial. Empezamos vendiendo a
             amigos y familia, y gracias a su confianza hoy enviamos a todo el país.
           </p>
           <p>
@@ -80,17 +80,17 @@ export default function Nosotros() {
         </div>
       </section>
 
-      {/* Galería (usa imágenes públicas o cámbialas por las tuyas) */}
-      <section className="about-gallery">
+      {/* La sección de Galería está comentada para que no se vea */}
+      {/* <section className="about-gallery">
         <h2>Detrás de escena</h2>
         <p className="gallery-sub">Nuestro proceso real: selección, control y empaque.</p>
         <div className="gallery-grid">
-          {/* Coloca estas imágenes en /public/images/ ... o cambia las rutas */}
           <img src="/images/nosotros-1.webp" alt="Selección de prendas" />
           <img src="/images/nosotros-2.webp" alt="Control de calidad" />
           <img src="/images/nosotros-3.webp" alt="Empaque para envío" />
         </div>
-      </section>
+      </section> 
+      */}
 
       {/* CTA final */}
       <section className="about-cta-block">

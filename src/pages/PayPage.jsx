@@ -1,24 +1,18 @@
-// src/pages/PayPage.jsx
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const getApiUrl = () => {
   const apiUrl = import.meta.env.VITE_API_BASE || import.meta.env.VITE_API_URL;
-  if (import.meta.env.PROD && !apiUrl) {
-    console.error('⚠️  VITE_API_URL no está configurada en producción!');
-  }
   const defaultUrl = import.meta.env.DEV ? 'http://localhost:5000' : '';
   return (apiUrl || defaultUrl).replace(/\/+$/, '');
 };
 
 const API = getApiUrl();
 
-// Centavos únicos a partir del id (para que coincida con lo que se paga en Nequi/Daviplata)
-function uniqueCentsFromId(id) {
-  if (!id) return '00';
+function uniquePesosFromId(id) {
+  if (!id) return 0;
   const hex = id.toString().slice(-2);
-  const num = parseInt(hex, 16) % 100;
-  return num.toString().padStart(2, '0');
+  return parseInt(hex, 16) % 100;
 }
 
 export default function PayPage() {
@@ -26,196 +20,143 @@ export default function PayPage() {
   const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // método de pago seleccionado: 'nequi' | 'daviplata' | 'contraentrega'
   const [method, setMethod] = useState('nequi');
-
-  // URL del comprobante (enlace oficial compartido desde la app)
   const [receiptUrl, setReceiptUrl] = useState('');
   const [sending, setSending] = useState(false);
+
+  const CELULAR_PAGO = "301 700 1227";
 
   useEffect(() => {
     async function load() {
       try {
         const res = await fetch(`${API}/api/orders/${orderId}/summary`);
         const data = await res.json();
-        if (!res.ok) throw new Error(data?.message || data?.error || 'Orden no encontrada');
+        if (!res.ok) throw new Error('Error');
         setOrder(data);
-      } catch (e) {
-        console.error('Error cargando resumen de orden:', e);
-        setOrder(null);
-      } finally {
-        setLoading(false);
-      }
+      } catch (e) { setOrder(null); } finally { setLoading(false); }
     }
     load();
   }, [orderId]);
 
-  if (loading) return <div style={{ padding: 20 }}>Cargando...</div>;
-  if (!order) return <div style={{ padding: 20 }}>Orden no encontrada.</div>;
-
-  // Total mostrado con separador de miles + centavos únicos
-  const cents = uniqueCentsFromId(orderId);
-  const totalCOP = (order.total ?? 0).toLocaleString('es-CO');
-  const totalConCentavos = `${totalCOP},${cents}`;
-
   async function confirmarPago() {
     try {
       setSending(true);
-
-      // Endpoint de “pago manual en revisión” (ya existe en tu backend)
       const res = await fetch(`${API}/api/payments/manual/mark-awaiting`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderId,
-          method,                // 'nequi' | 'daviplata' | 'contraentrega'
-          receiptUrl: receiptUrl || null,
-        }),
+        body: JSON.stringify({ orderId, method, receiptUrl: receiptUrl || null }),
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || data?.error || 'No se pudo registrar el pago');
-
-      const okMsg =
-        method === 'contraentrega'
-          ? '🚚 Tu pedido quedó para PAGO CONTRAENTREGA. Te contactaremos para coordinar entrega.'
-          : '✅ Recibimos tu comprobante. Tu pago está en revisión.';
-
-      alert(okMsg);
+      if (!res.ok) throw new Error('Error');
+      alert(method === 'contraentrega' ? '🚚 Pedido registrado.' : '✅ Pago en revisión.');
       navigate(`/pago/estado/${orderId}`);
-    } catch (e) {
-      alert('⚠️ Error: ' + (e?.message || 'No se pudo registrar el pago'));
-    } finally {
-      setSending(false);
-    }
+    } catch (e) { alert('⚠️ Error: ' + e.message); } finally { setSending(false); }
   }
 
-  return (
-    <div style={{ maxWidth: 780, margin: '30px auto', padding: '0 16px' }}>
-      <h1>Revisar y pagar</h1>
-      <p><b>Orden:</b> {orderId}</p>
-      <p><b>Total a pagar:</b> ${totalConCentavos}</p>
+  if (loading) return <div style={{padding:40, color:'#fff', textAlign:'center'}}>Cargando...</div>;
+  if (!order) return <div style={{padding:40, color:'#fff', textAlign:'center'}}>Orden no encontrada.</div>;
 
-      {/* Selector de método */}
-      <div style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
-        <button
-          onClick={() => setMethod('nequi')}
-          style={{
-            padding: '8px 12px',
-            borderRadius: 10,
-            border: method === 'nequi' ? '2px solid #111' : '1px solid #ddd',
-            background: method === 'nequi' ? '#f4f4f4' : '#fff',
-            cursor: 'pointer'
-          }}
-        >
-          Nequi
-        </button>
-        <button
-          onClick={() => setMethod('daviplata')}
-          style={{
-            padding: '8px 12px',
-            borderRadius: 10,
-            border: method === 'daviplata' ? '2px solid #111' : '1px solid #ddd',
-            background: method === 'daviplata' ? '#f4f4f4' : '#fff',
-            cursor: 'pointer'
-          }}
-        >
-          Daviplata
-        </button>
-        <button
-          onClick={() => setMethod('contraentrega')}
-          style={{
-            padding: '8px 12px',
-            borderRadius: 10,
-            border: method === 'contraentrega' ? '2px solid #111' : '1px solid #ddd',
-            background: method === 'contraentrega' ? '#f4f4f4' : '#fff',
-            cursor: 'pointer'
-          }}
-        >
-          Contraentrega
-        </button>
+  const extraPesos = uniquePesosFromId(orderId);
+  const totalFinal = (order.total ?? 0) + extraPesos;
+  const totalFormateado = Math.floor(totalFinal).toLocaleString('es-CO');
+
+  return (
+    <div style={{ maxWidth: 500, margin: '20px auto', padding: '0 16px', color: '#fff', fontFamily: 'sans-serif' }}>
+      
+      <header style={{textAlign:'center', marginBottom: 20}}>
+        <h1 style={{fontSize: '1.6rem', margin: 0}}>Finalizar Pago</h1>
+        <p style={{opacity: 0.5, fontSize: '0.8rem'}}>Orden: #{orderId.slice(-6).toUpperCase()}</p>
+      </header>
+
+      {/* TARJETA DE TOTAL */}
+      <div style={{ background: '#0f172a', padding: '20px', borderRadius: 20, textAlign: 'center', marginBottom: 20, border: '1px solid #334155' }}>
+        <p style={{margin:0, fontSize:'0.85rem', opacity: 0.7}}>Total a transferir:</p>
+        <h2 style={{fontSize: '2.2rem', margin: '8px 0'}}>${totalFormateado}</h2>
       </div>
 
-      {/* Instrucciones dinámicas */}
-      <div style={{ border: '1px solid #eee', padding: 16, borderRadius: 12 }}>
-        {method === 'nequi' && (
+      {/* SELECTOR DE MÉTODO (BOTONES SIMPLES Y SEGUROS) */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+        {['nequi', 'daviplata', 'contraentrega'].map((m) => {
+          const isActive = method === m;
+          let bgColor = '#1e293b';
+          let borderColor = '#334155';
+          
+          if (isActive) {
+            borderColor = m === 'nequi' ? '#7000FF' : m === 'daviplata' ? '#ED1C24' : '#fff';
+            bgColor = borderColor;
+          }
+
+          return (
+            <button
+              key={m}
+              onClick={() => setMethod(m)}
+              style={{
+                flex: 1, padding: '12px 5px', borderRadius: 12, cursor: 'pointer',
+                border: `2px solid ${borderColor}`, 
+                background: isActive ? bgColor : 'transparent',
+                color: (isActive && m === 'contraentrega') ? '#000' : '#fff',
+                fontWeight: 'bold', fontSize: '0.7rem', transition: '0.2s'
+              }}
+            >
+              <div style={{fontSize: '1.2rem', marginBottom: 4}}>
+                {m === 'nequi' && '📱'}
+                {m === 'daviplata' && '💳'}
+                {m === 'contraentrega' && '🚚'}
+              </div>
+              {m.toUpperCase()}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* INSTRUCCIONES */}
+      <div style={{ background: '#1e293b', padding: 25, borderRadius: 20, border: '1px solid #334155' }}>
+        {method !== 'contraentrega' ? (
           <>
-            <h3>Pago por Nequi</h3>
-            <ol>
-              <li>Envía <b>${totalConCentavos}</b> a <b>Nequi: 3XX XXX XXXX</b> (Titular: <b>Tu Negocio</b>).</li>
-              <li>En la referencia del pago escribe: <b>{orderId}</b>.</li>
-              <li>Después de pagar, en el comprobante toca <b>Compartir → Copiar enlace</b> y pégalo abajo.</li>
-            </ol>
-            <div style={{ marginTop: 10 }}>
-              <label>Enlace del comprobante:</label>
-              <input
-                value={receiptUrl}
-                onChange={e => setReceiptUrl(e.target.value)}
-                placeholder="Pega aquí el link del comprobante"
-                style={{ display: 'block', width: '100%', padding: 8, marginTop: 6 }}
-              />
+            <h3 style={{marginTop:0, fontSize: '1.1rem', color: method === 'nequi' ? '#a855f7' : '#f87171'}}>
+              Pagar con {method.toUpperCase()}
+            </h3>
+            <div style={{display:'grid', gap: 15, fontSize: '0.95rem'}}>
+               <div>
+                  <span style={{color: '#94a3b8', fontSize: '0.8rem', display:'block'}}>Celular de la cuenta:</span>
+                  <b style={{fontSize: '1.3rem'}}>{CELULAR_PAGO}</b>
+               </div>
+               <div>
+                  <span style={{color: '#94a3b8', fontSize: '0.8rem', display:'block'}}>Valor exacto:</span>
+                  <b>${totalFormateado}</b>
+               </div>
+               <div>
+                  <span style={{color: '#94a3b8', fontSize: '0.8rem', display:'block'}}>Pega el link del comprobante:</span>
+                  <input
+                    value={receiptUrl}
+                    onChange={e => setReceiptUrl(e.target.value)}
+                    placeholder="Enlace oficial aquí"
+                    style={{ width: '100%', padding: '12px', borderRadius: 10, border: '1px solid #334155', background: '#0f172a', color: '#fff', boxSizing: 'border-box', marginTop: 8 }}
+                  />
+               </div>
             </div>
           </>
-        )}
-
-        {method === 'daviplata' && (
-          <>
-            <h3>Pago por Daviplata</h3>
-            <ol>
-              <li>Envía <b>${totalConCentavos}</b> a <b>Daviplata: 3XX XXX XXXX</b> (Titular: <b>Tu Negocio</b>).</li>
-              <li>Referencia del pago: <b>{orderId}</b>.</li>
-              <li>Comparte el comprobante → <b>Copiar enlace</b> y pégalo abajo.</li>
-            </ol>
-            <div style={{ marginTop: 10 }}>
-              <label>Enlace del comprobante:</label>
-              <input
-                value={receiptUrl}
-                onChange={e => setReceiptUrl(e.target.value)}
-                placeholder="Pega aquí el link del comprobante"
-                style={{ display: 'block', width: '100%', padding: 8, marginTop: 6 }}
-              />
-            </div>
-          </>
-        )}
-
-        {method === 'contraentrega' && (
-          <>
-            <h3>Pago contraentrega</h3>
-            <p>
-              Recibirás tu pedido y pagas al momento de la entrega. Te contactaremos para coordinar envío.
-              Conserva el número de orden: <b>{orderId}</b>.
-            </p>
-          </>
+        ) : (
+          <div style={{textAlign: 'center', padding: '10px 0'}}>
+            <div style={{fontSize: '2.5rem'}}>🚚</div>
+            <h3>Contraentrega</h3>
+            <p style={{opacity: 0.7, fontSize: '0.9rem'}}>Pagas en efectivo al recibir.</p>
+          </div>
         )}
 
         <button
           onClick={confirmarPago}
           disabled={sending}
-          style={{ marginTop: 12, padding: '10px 16px' }}
+          style={{ 
+            width: '100%', marginTop: 25, padding: 16, borderRadius: 12, border: 'none', 
+            background: '#22c55e', color: '#fff', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer'
+          }}
         >
-          {method === 'contraentrega'
-            ? (sending ? 'Registrando...' : 'Confirmar contraentrega')
-            : (sending ? 'Enviando...' : 'Ya pagué')}
+          {sending ? 'Procesando...' : 'Confirmar Registro'}
         </button>
       </div>
 
-      {/* Resumen del pedido */}
-      <div style={{ marginTop: 20 }}>
-        <h3>Resumen de tu pedido</h3>
-        <ul>
-          {order.items?.map((it, idx) => (
-            <li key={idx}>
-              {(it.sku || 'SKU')} — x{it.qty} → ${((it.unitPrice || 0) * (it.qty || 1)).toLocaleString('es-CO')}
-            </li>
-          ))}
-        </ul>
-        <p><b>Envío a:</b> {order.shippingTo?.nombre}, {order.shippingTo?.ciudad}</p>
-      </div>
-
-      <div style={{ display: 'flex', gap: 12, marginTop: 20 }}>
-        <Link to="/">← Seguir comprando</Link>
-        <Link to={`/pago/estado/${orderId}`}>Ver estado del pago</Link>
+      <div style={{ textAlign: 'center', marginTop: 30 }}>
+        <Link to="/" style={{color: '#94a3b8', textDecoration:'none', fontSize: '0.85rem'}}>← Volver a Too Shopper</Link>
       </div>
     </div>
   );

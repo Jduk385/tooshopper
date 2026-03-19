@@ -64,23 +64,28 @@ export default function ProductCard({ product, onAdd }) {
         </div>
 
         {/* CTA */}
-        <button
-          className="product-card__cta"
-          onClick={() =>
-            onAdd &&
-            onAdd({
-              productId: product._id || product.id,
-              name: product.name,
-              price: product.price,
-              color: v.color,
-              size,
-              qty: 1,
-              image: front || placeholder,
-            })
-          }
-        >
-          Agregar al carrito
-        </button>
+       <button
+  className="product-card__cta"
+  disabled={product.available_stock <= 0}
+  style={{
+    background: product.available_stock > 0 ? '' : '#ccc',
+    cursor: product.available_stock > 0 ? 'pointer' : 'not-allowed'
+  }}
+  onClick={() =>
+    product.available_stock > 0 && onAdd &&
+    onAdd({
+      productId: product._id || product.id,
+      name: product.name,
+      price: product.price,
+      color: v.color,
+      size,
+      qty: 1,
+      image: front || placeholder,
+    })
+  }
+>
+  {product.available_stock > 0 ? 'Agregar al carrito' : 'Agotado'}
+</button>
       </div>
     </article>
   );

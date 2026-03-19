@@ -16,18 +16,18 @@
 }
 
 .footer-section {
-  flex: 1 1 280px;
-  min-width: 250px;
+  flex: 1 1 250px;
+  min-width: 200px;
 }
 
 .footer-section h2 {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 15px;
-  color: #f472b6;
+  color: #f472b6; /* Tu rosado */
 }
 
-.footer-section p,
+.footer-section p, 
 .footer-section ul {
   font-size: 14px;
   line-height: 1.6;
@@ -40,32 +40,50 @@
   margin: 0;
 }
 
-.footer-section li a {
+.footer-section li {
+  margin-bottom: 10px;
+}
+
+.footer-section a {
   color: #ccc;
   text-decoration: none;
   transition: 0.3s ease;
 }
 
-.footer-section li a:hover {
+.footer-section a:hover {
   color: #f472b6;
+}
+
+/* REDES SOCIALES EN FILA */
+.social-icons {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 15px !important;
+  margin-top: 10px;
 }
 
 .social-icons a {
   color: #ccc;
-  font-size: 20px;
-  margin-right: 15px;
-  transition: 0.3s ease;
-}
-
-.social-icons a:hover {
-  color: #f472b6;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
 }
 
 .footer-bottom {
   text-align: center;
   margin-top: 30px;
   font-size: 13px;
-  color: #999;
+  color: #777;
   border-top: 1px solid #222;
   padding-top: 15px;
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .social-icons {
+    justify-content: center !important;
+  }
 }

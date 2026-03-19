@@ -113,7 +113,7 @@ export default function Politicas() {
 
       <section id="contacto" className="policy-section">
         <h2>7. Contacto</h2>
-        <p>Email: <a href="mailto:contacto@tooshopper.com">contacto@tooshopper.com</a></p>
+        <p>Email: <a href="mailto:info@tooshopper.com">info@tooshopper.com</a></p>
         <p>WhatsApp: <a href="https://wa.me/573113987975" target="_blank" rel="noopener noreferrer">+57 311 398 7975</a></p>
         <p>Medellín, Colombia</p>
       </section>

@@ -1,28 +1,24 @@
 /* =========================
-   Estilos globales limpios
+   Estilos globales CORREGIDOS
    ========================= */
 
-/* Box sizing consistente */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* Reset mínimo y control de overflow */
-html, body, #root {
-  height: 100%;
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-html { font-size: 16px; }
-
-html, body {
-  margin: 0;
-  padding: 0;
+/* CAMBIO CLAVE: Quitamos height: 100% y dejamos que la página crezca */
+html {
+  font-size: 16px;
+  scroll-behavior: auto !important; /* Evita conflictos con animaciones */
 }
 
 body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* Mantiene la limpieza lateral */
+  min-height: 100vh;  /* Asegura que ocupe al menos la pantalla, pero que pueda crecer */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,13 +27,17 @@ body {
   color: #111;
 }
 
+#root {
+  width: 100%;
+}
+
 /* Botones/inputs heredan la misma fuente */
 button, input, textarea, select {
   font: inherit;
   color: inherit;
 }
 
-/* Imágenes fluidas y sin deformarse */
+/* Imágenes fluidas */
 img, svg, video {
   display: block;
   max-width: 100%;

@@ -12,16 +12,24 @@ const STATUS_LABELS = {
   refunded: 'Reembolsada',
   cancelled: 'Cancelada',
 };
-
 function fmtMoney(n) {
   try { return new Intl.NumberFormat('es-CO').format(n || 0); }
   catch { return (n || 0).toLocaleString(); }
 }
+
+// --- ESTE ES EL TIMBRE NUEVO ---
+window.sonarTimbre = function() {
+  const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+  audio.play().catch(e => console.log("Haz clic en la página para activar sonido"));
+};
+// ------------------------------
+
 function fmtDate(d) {
   try {
     return new Date(d).toLocaleString('es-CO', { dateStyle: 'short', timeStyle: 'short' });
   } catch { return d; }
 }
+
 function csvEscape(value) {
   const v = value == null ? '' : String(value);
   if (/[",\n]/.test(v)) {
@@ -99,7 +107,7 @@ export default function AdminOrders() {
     params.set('page', String(custom.page ?? page));
     return params;
   }
-
+  
   async function load() {
     try {
       setErr('');
@@ -111,6 +119,12 @@ export default function AdminOrders() {
       if (res.status === 401) throw new Error('No autorizado: inicia sesión.');
       if (res.status === 403) throw new Error('Solo admin: tu cuenta no tiene permisos.');
       if (!res.ok) throw new Error(data?.error || 'No se pudo cargar el listado');
+
+    // --- EL VIGILANTE DEL TIMBRE ---
+      if (items.length > 0 && data.items && data.items.length > items.length) {
+        window.sonarTimbre(); 
+        alert("¡OJO! Tienes una venta nueva en Too Shopper 🛍️");
+      }
 
       setItems(data.items || []);
       setTotal(data.total || 0);
@@ -154,16 +168,25 @@ export default function AdminOrders() {
     return acc;
   }, [items]);
 
-  // ---- Acciones: reglas ----
+  // ---- Acciones: reglas para que salgan los botones ----
   const isCOD = (o) => String(o?.payment?.method || '').toLowerCase() === 'contraentrega';
-  const canApprove = (o) => o.status === 'pending_payment' && !isCOD(o);
-  const canCancel  = (o) => o.status === 'pending_payment';
+
+  // Ahora incluimos 'awaiting_verification' para que aparezca el botón de aprobar
+  const canApprove = (o) => 
+    o.status === 'pending_payment' || 
+    o.status === 'awaiting_verification';
+
+  // Lo mismo para cancelar: si está en verificación, también debes poder cancelarla
+  const canCancel = (o) => 
+    o.status === 'pending_payment' || 
+    o.status === 'pending_delivery' || 
+    o.status === 'awaiting_verification';
+
   const canDeliver = (o) =>
     o.status === 'pending_delivery' ||
     (o.status === 'pending_payment' && isCOD(o));
-  const canNotDelivered = (o) => o.status === 'pending_delivery' && isCOD(o);
 
-  // ---- Acciones: llamados al backend ----
+  const canNotDelivered = (o) => o.status === 'pending_delivery' && isCOD(o);
   async function markPaid(o) {
     if (!window.confirm('¿Aprobar pago y confirmar la orden?')) return;
 

@@ -10,7 +10,8 @@ import FeaturedProducts from "./components/FeaturedProducts";
 import PromoBanner from "./components/PromoBanner";
 import Footer from "./components/Footer";
 import FloatingButtons from "./components/FloatingButtons";
-import ScrollToTop from "./components/ScrollToTop"; // ✅ NUEVO
+import ScrollToTop from "./components/ScrollToTop";
+import ComboInvite from "./components/ComboInvite"; // ✅ Importado correctamente
 
 // Búsqueda
 import Buscar from "./pages/Buscar";
@@ -37,17 +38,18 @@ import Checkout from "./components/Checkout";
 import Politicas from "./components/Politicas";
 import Nosotros from "./components/Nosotros";
 
-// Lazy pages (manténlas bajo <Suspense/>)
+// Lazy pages
 const PayPage         = lazy(() => import("./pages/PayPage"));
 const PayStatus       = lazy(() => import("./pages/PayStatus"));
 const AdminOrders     = lazy(() => import("./pages/AdminOrders"));
 const ProductDetailAC = lazy(() => import("./pages/ProductDetailAC"));
 
-// Home compacto
+// Home compacto - ✅ AQUÍ SE ORGANIZÓ EL ORDEN VISUAL
 const Home = () => (
   <>
     <Hero />
     <PromoBanner />
+    <ComboInvite /> {/* ✅ El letrero que corre aparece aquí ahora */}
     <main>
       <Categories />
       <FeaturedProducts />
@@ -58,12 +60,10 @@ const Home = () => (
 export default function App() {
   return (
     <>
-      {/* ✅ Siempre vuelve arriba al cambiar de ruta */}
       <ScrollToTop />
 
       <Header />
 
-      {/* Suspense evita que el import de páginas lazy tumbe la app */}
       <Suspense fallback={<div style={{ padding: 20 }}>Cargando…</div>}>
         <Routes>
           {/* ===================== Públicas ===================== */}
@@ -95,7 +95,7 @@ export default function App() {
 
           {/* ================= Pago ================= */}
           <Route path="/pagar/:orderId" element={<PayPage />} />
-          <Route path="/pago/:orderId" element={<PayPage />} /> {/* alias */}
+          <Route path="/pago/:orderId" element={<PayPage />} />
           <Route path="/pago/estado/:orderId" element={<PayStatus />} />
 
           {/* ============ Detalle de producto ============ */}

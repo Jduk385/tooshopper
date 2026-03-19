@@ -1,0 +1,124 @@
+
+.combo-invite-container {
+  background: #0f172a; /* Azul oscuro elegante */
+  padding: 40px 0;
+  margin: 20px 0;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* BANNER QUE CORRE (MARQUEE) */
+.invite-marquee {
+  background: #e11d48; /* Fucsia SALE */
+  padding: 10px 0;
+  font-weight: 900;
+  font-size: 16px;
+  display: flex;
+  overflow: hidden;
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-move 20s linear infinite;
+  padding-left: 50px;
+}
+
+@keyframes marquee-move {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* CONTENIDO CENTRAL */
+.invite-content {
+  max-width: 1100px;
+  margin: 40px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 20px;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.invite-title {
+  font-size: 3rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1;
+}
+
+.invite-title span {
+  color: #e11d48;
+}
+
+.invite-btn {
+  background: #e11d48;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  margin-top: 20px;
+}
+
+.invite-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(225, 29, 72, 0.6);
+}
+
+.bundle-badge {
+  width: 180px;
+  height: 180px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  transform: rotate(-10deg);
+  border: 6px solid #e11d48;
+}
+
+.badge-main { font-size: 3.5rem; font-weight: 900; color: #e11d48; line-height: 1; }
+
+/* ===== FIX BOTONES MODAL TALLA ===== */
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-back,
+.btn-add-modal {
+  background: #ffffff !important;
+  color: #111 !important;
+  border: none !important;
+  padding: 10px 18px !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  opacity: 1 !important;
+}
+
+.btn-add-modal {
+  background: #e11d48 !important;
+  color: #fff !important;
+}
+
+.btn-add-modal:disabled {
+  background: #888 !important;
+  cursor: not-allowed;
+}
+
+/* ===== FIX IMAGEN GRANDE EN COMBO ===== */
+.combo-box img {
+  max-height: 250px;
+  width: auto;
+  object-fit: contain;
+}

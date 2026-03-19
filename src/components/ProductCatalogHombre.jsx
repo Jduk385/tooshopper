@@ -21,7 +21,7 @@ const COLOR_HEX = {
   ROJA: '#B91C1C',
   VERDE: '#0f4d2f',
   'VERDE OSCURO': '#0f4d2f',
-  BEIGE: '#D6D3D1',
+  BEIGE: '#97613d',
   GRIS: '#9CA3AF',
 };
 const COLOR_WORDS = Object.keys(COLOR_HEX);
@@ -56,6 +56,18 @@ function niceName(name) {
   return stripColorWords(stripParen(name));
 }
 
+// ✅ normaliza imágenes por si vienen en "image" o "images"
+function getImages(p) {
+  if (Array.isArray(p?.images) && p.images.length) return p.images;
+  if (p?.image) return [p.image];
+  return [];
+}
+
+// ✅ normaliza id real (Mongo) aunque venga como _id o id
+function getMongoId(p) {
+  return String(p?._id || p?.id || p?.productId || p?.variantId || '');
+}
+
 // ----------------- componente -----------------
 export default function ProductCatalogHombre() {
   const navigate = useNavigate();
@@ -68,25 +80,23 @@ export default function ProductCatalogHombre() {
   async function loadProducts(signal) {
     setLoading(true);
     setErr('');
-    const candidates = ['/products.json', '/products/products.json', '/data/products.json'];
-    let ok = false;
-    for (const url of candidates) {
-      try {
-        const r = await fetch(url, { cache: 'no-store', signal });
-        if (!r.ok) continue;
-        const j = await r.json();
-        const arr = Array.isArray(j) ? j : (Array.isArray(j?.items) ? j.items : []);
-        if (!arr?.length) continue;
-        setRawItems(arr);
-        ok = true;
-        break;
-      } catch { /* intenta el siguiente */ }
-    }
-    if (!ok) {
+
+    try {
+      const r = await fetch('/api/products?limit=250', { cache: 'no-store', signal });
+      if (!r.ok) throw new Error('No OK');
+
+      const j = await r.json();
+      const arr = Array.isArray(j) ? j : (Array.isArray(j?.items) ? j.items : []);
+      if (!arr?.length) throw new Error('Empty');
+
+      setRawItems(arr);
+      setLoading(false);
+      return;
+    } catch {
       setRawItems([]);
-      setErr('No se pudieron cargar los productos. Revisa la ruta de products.json.');
+      setErr('No se pudieron cargar los productos desde /api/products. Revisa que el backend esté activo y accesible.');
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -100,7 +110,7 @@ export default function ProductCatalogHombre() {
     for (const p of rawItems) {
       const fam = familyFromSku(p.sku);
       const colorKey = colorFromSkuOrName(p);
-      const sizeKey = String(p.variant || 'ÚNICA').toUpperCase();
+      const sizeKey = String(p.variant || p.size || 'ÚNICA').toUpperCase();
 
       if (!map[fam]) {
         map[fam] = { family: fam, name: niceName(p.name), price: p.price ?? 0, colors: {} };
@@ -109,15 +119,18 @@ export default function ProductCatalogHombre() {
         map[fam].colors[colorKey] = { variants: {}, images: [] };
       }
 
+      const mongoId = getMongoId(p);
+
       map[fam].colors[colorKey].variants[sizeKey] = {
-        _id: p._id || `${p.sku}-${sizeKey}`,
+        // ✅ si viene id en vez de _id, igual queda bien
+        _id: mongoId || `${p.sku}-${sizeKey}`,
         name: p.name,
         price: p.price ?? 0,
-        images: Array.isArray(p.images) ? p.images : [],
+        images: getImages(p),
         available_stock: p.available_stock ?? 0,
       };
 
-      const imgs = Array.isArray(p.images) ? p.images : [];
+      const imgs = getImages(p);
       for (const src of imgs) {
         const list = map[fam].colors[colorKey].images;
         if (src && !list.includes(src)) list.push(src);
@@ -147,9 +160,11 @@ export default function ProductCatalogHombre() {
     const cData = famData && sel ? famData.colors[sel.color] : null;
     return cData?.variants ? cData.variants[sel.size] : null;
   }
+
   function goDetail(fam) {
     const item = getSelectedItem(fam);
-    const id = item?._id || fam;
+    const id = item?._id || '';
+    if (!id) return;
     navigate('/producto/' + encodeURIComponent(id));
   }
 
@@ -164,9 +179,11 @@ export default function ProductCatalogHombre() {
     }
     setSelected(s => ({ ...s, [fam]: { color, size: firstSize, photo: 0 } }));
   }
+
   function selectSize(fam, size) {
     setSelected(s => ({ ...s, [fam]: { ...(s[fam] || {}), size } }));
   }
+
   function nextPhoto(fam, e) {
     if (e) e.stopPropagation();
     setSelected(s => {
@@ -177,6 +194,7 @@ export default function ProductCatalogHombre() {
       return { ...s, [fam]: { ...sel, photo } };
     });
   }
+
   function prevPhoto(fam, e) {
     if (e) e.stopPropagation();
     setSelected(s => {
@@ -203,31 +221,31 @@ export default function ProductCatalogHombre() {
     const img = imgList[0] || '';
 
     addToCart(
-      { _id: item._id, id: item._id, name: famData.name, price: item.price ?? famData.price, image: img },
+      // ✅ mandamos el id real
+      { _id: item._id, id: item._id, name: famData.name, price: item.price ?? famData.price, image: img, size: sel.size, variant: sel.size },
       1
     );
     navigate('/carrito');
   }
 
   // 👉 orden: LACOSTE-POLO (1) → BOSS-FRANJA (2) → BUNNY-POLO (3) → resto (10) → BOSS-BASICA (99, al final)
-const famKeysSorted = Object.keys(families).sort((a, b) => {
-  const rank = (key) => {
-    const k = key.toUpperCase();
-    if (k.startsWith('LACOSTE-POLO')) return 1;
-    if (k.startsWith('BOSS-FRANJA'))  return 2;
-    if (k.startsWith('BUNNY-POLO'))   return 3;
-    if (k.startsWith('BOSS-BASICA'))  return 99; // 👈 SIEMPRE al final
-    return 10; // resto
-  };
-  const ra = rank(a), rb = rank(b);
-  if (ra !== rb) return ra - rb;
+  const famKeysSorted = Object.keys(families).sort((a, b) => {
+    const rank = (key) => {
+      const k = key.toUpperCase();
+      if (k.startsWith('LACOSTE-POLO')) return 1;
+      if (k.startsWith('BOSS-FRANJA'))  return 2;
+      if (k.startsWith('BUNNY-POLO'))   return 3;
+      if (k.startsWith('BOSS-BASICA'))  return 99; // 👈 SIEMPRE al final
+      return 10; // resto
+    };
+    const ra = rank(a), rb = rank(b);
+    if (ra !== rb) return ra - rb;
 
-  // Empate: orden alfabético por nombre visible
-  const na = families[a]?.name || a;
-  const nb = families[b]?.name || b;
-  return na.localeCompare(nb, 'es');
-});
-
+    // Empate: orden alfabético por nombre visible
+    const na = families[a]?.name || a;
+    const nb = families[b]?.name || b;
+    return na.localeCompare(nb, 'es');
+  });
 
   return (
     <section className="product-catalog-hombre" style={{ padding: 20, textAlign: 'center' }}>
@@ -395,4 +413,3 @@ function navBtnStyle(side) {
   style[side] = 6;
   return style;
 }
- 
